@@ -6,16 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://sn1per-ssd.github.io">
-  <title>Tag: hexo | Sn1pEr&#39;s blog</title>
+  <title>常见Web源码泄露 | Sn1pEr&#39;s blog</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Sn1pEr&#39;s blog">
-<meta property="og:url" content="https://sn1per-ssd.github.io/tags/hexo/index.html">
+  <meta name="description" content=".git源码泄露漏洞成因：在运行git init 初始化代码库的时候，会在当前目录下产生一个.git的隐藏文件，用来记录代码的变更记录等等。在发布代码的时候，如果该文件没有删除而是直接发布了，那么使用这个文件，就可以恢复源代码。 漏洞利用：工具：GitHack .DS_Store文件泄露漏洞成因：在发布代码的时候未删除隐藏文件汇总的.DS_Store文件，然后攻击者获得了敏感文件等信息 漏洞利">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常见Web源码泄露">
+<meta property="og:url" content="https://sn1per-ssd.github.io/2020/03/08/%E5%B8%B8%E8%A7%81Web%E6%BA%90%E7%A0%81%E6%B3%84%E9%9C%B2/index.html">
 <meta property="og:site_name" content="Sn1pEr&#39;s blog">
+<meta property="og:description" content=".git源码泄露漏洞成因：在运行git init 初始化代码库的时候，会在当前目录下产生一个.git的隐藏文件，用来记录代码的变更记录等等。在发布代码的时候，如果该文件没有删除而是直接发布了，那么使用这个文件，就可以恢复源代码。 漏洞利用：工具：GitHack .DS_Store文件泄露漏洞成因：在发布代码的时候未删除隐藏文件汇总的.DS_Store文件，然后攻击者获得了敏感文件等信息 漏洞利">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-01T07:29:32.953Z">
 <meta property="article:author" content="Sn1pEr">
+<meta property="article:tag" content="源码泄露">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Sn1pEr&#39;s blog" type="application/atom+xml">
@@ -203,119 +208,270 @@ var _hmt = _hmt || [];
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-常见Web源码泄露" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
   
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2021/02/06/hexo%E5%AE%89%E8%A3%85%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/" class="archive-article-date">
-        <time datetime="2021-02-06T13:12:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-06</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2021/02/06/hexo%E5%AE%89%E8%A3%85%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/">hexo安装时遇到的一些问题</a>
-	
+    <h1 class="article-title" itemprop="name">
+      常见Web源码泄露
     </h1>
   
 
 
-        <div class="article-info info-on-right">
+  
+  
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2020/03/08/%E5%B8%B8%E8%A7%81Web%E6%BA%90%E7%A0%81%E6%B3%84%E9%9C%B2/" class="archive-article-date">
+        <time datetime="2020-03-07T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-08</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">231字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <a id="more"></a>
+
+<h3 id="git源码泄露"><a href="#git源码泄露" class="headerlink" title=".git源码泄露"></a>.git源码泄露</h3><h4 id="漏洞成因："><a href="#漏洞成因：" class="headerlink" title="漏洞成因："></a>漏洞成因：</h4><p>在运行git init 初始化代码库的时候，会在当前目录下产生一个.git的隐藏文件，用来记录代码的变更记录等等。在发布代码的时候，如果该文件没有删除而是直接发布了，那么使用这个文件，就可以恢复源代码。</p>
+<h4 id="漏洞利用："><a href="#漏洞利用：" class="headerlink" title="漏洞利用："></a>漏洞利用：</h4><p>工具：<a target="_blank" rel="noopener" href="https://github.com/lijiejie/GitHack">GitHack</a></p>
+<h3 id="DS-Store文件泄露"><a href="#DS-Store文件泄露" class="headerlink" title=".DS_Store文件泄露"></a>.DS_Store文件泄露</h3><h4 id="漏洞成因：-1"><a href="#漏洞成因：-1" class="headerlink" title="漏洞成因："></a>漏洞成因：</h4><p>在发布代码的时候未删除隐藏文件汇总的.DS_Store文件，然后攻击者获得了敏感文件等信息</p>
+<h4 id="漏洞利用：-1"><a href="#漏洞利用：-1" class="headerlink" title="漏洞利用："></a>漏洞利用：</h4><p>工具：<a target="_blank" rel="noopener" href="https://github.com/lijiejie/ds_store_exp">ds store exp</a></p>
+<h3 id="swap泄露"><a href="#swap泄露" class="headerlink" title=".swap泄露"></a>.swap泄露</h3><h4 id="漏洞成因：-2"><a href="#漏洞成因：-2" class="headerlink" title="漏洞成因："></a>漏洞成因：</h4><p>linux在编辑时意外退出时产生的临时文件，这是隐藏文件，需要<code>.filename.swap</code></p>
+<h4 id="漏洞利用：-2"><a href="#漏洞利用：-2" class="headerlink" title="漏洞利用："></a>漏洞利用：</h4><p>下载下来后用<code>vi -r filename </code>或 <code>vim -r filename</code></p>
+<h3 id="hg源码泄露"><a href="#hg源码泄露" class="headerlink" title=".hg源码泄露"></a>.hg源码泄露</h3><h4 id="漏洞成因：-3"><a href="#漏洞成因：-3" class="headerlink" title="漏洞成因："></a>漏洞成因：</h4><p>hg init 的时候会生成 .hg</p>
+<h4 id="漏洞利用：-3"><a href="#漏洞利用：-3" class="headerlink" title="漏洞利用："></a>漏洞利用：</h4><p>工具： <a target="_blank" rel="noopener" href="https://github.com/kost/dvcs-ripper">dvcs-ripper</a></p>
+
+    
+
+    
+
+    
+    <div class="declare"> 
+      <ul class="post-copyright">
+        <li>
+          <strong>本文作者：</strong>
+          Sn1pEr
+        </li>
+        <li>
+          <strong>本文链接：</strong>
+          <a href="https://sn1per-ssd.github.io/2020/03/08/常见Web源码泄露/" title="常见Web源码泄露" target="_blank">https://sn1per-ssd.github.io/2020/03/08/常见Web源码泄露/</a>
+        </li>
+        
+        <li>
+          <strong>版权声明： </strong>
           
+          本博客所有文章除特别声明外，均采用 <a href="https://github.com/JoeyBling/hexo-theme-yilia-plus/blob/master/LICENSE" rel="external nofollow" target="_blank">MIT</a> 许可协议。转载请注明出处！
+        </li>
+        
+      </ul>
+    </div>
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">源码泄露</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+    
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/搭环境//" class="article-tag-list-link color4">搭环境</a>
+        			<a href="/categories/CTF//" class="article-tag-list-link color4">CTF</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+    
+
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=https://sn1per-ssd.github.io/2020/03/08/%E5%B8%B8%E8%A7%81Web%E6%BA%90%E7%A0%81%E6%B3%84%E9%9C%B2/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2021/02/04/hexo%E6%96%B0%E6%89%8B%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8C%97/" class="archive-article-date">
-        <time datetime="2021-02-04T07:54:30.230Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-04</time>
-</a>
 
+
+<nav id="article-nav">
+  
+    <a href="/2021/02/04/hexo%E6%96%B0%E6%89%8B%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8C%97/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          hexo新手使用指北
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/11/28/winhex%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">winhex常见套路</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2021/02/04/hexo%E6%96%B0%E6%89%8B%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8C%97/">hexo新手使用指北</a>
-	
-    </h1>
-  
-
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#git%E6%BA%90%E7%A0%81%E6%B3%84%E9%9C%B2"><span class="toc-number">1.</span> <span class="toc-text">.git源码泄露</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">漏洞成因：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">漏洞利用：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DS-Store%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2"><span class="toc-number">2.</span> <span class="toc-text">.DS_Store文件泄露</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0%EF%BC%9A-1"><span class="toc-number">2.1.</span> <span class="toc-text">漏洞成因：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%EF%BC%9A-1"><span class="toc-number">2.2.</span> <span class="toc-text">漏洞利用：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swap%E6%B3%84%E9%9C%B2"><span class="toc-number">3.</span> <span class="toc-text">.swap泄露</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0%EF%BC%9A-2"><span class="toc-number">3.1.</span> <span class="toc-text">漏洞成因：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%EF%BC%9A-2"><span class="toc-number">3.2.</span> <span class="toc-text">漏洞利用：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hg%E6%BA%90%E7%A0%81%E6%B3%84%E9%9C%B2"><span class="toc-number">4.</span> <span class="toc-text">.hg源码泄露</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0%EF%BC%9A-3"><span class="toc-number">4.1.</span> <span class="toc-text">漏洞成因：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%EF%BC%9A-3"><span class="toc-number">4.2.</span> <span class="toc-text">漏洞利用：</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+        
+    </div>
+</aside>
 
-    
+
+
+
+
+
+
+
+
+
+
+  <div id="gitalk-container" style="padding: 0px 30px 0px 30px;"></div> 
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/gitalk/1.7.0/gitalk.css">
+<script src="https://cdn.bootcdn.net/ajax/libs/gitalk/1.7.0/gitalk.min.js"></script>
+<script type="text/javascript">
+
+if(true){
+	var gitalk = new Gitalk({
+  	clientID: 'aa4b4451b3c3cf5c9d80',
+  	clientSecret: '6e89799af07ac80e892a2244ae940e450d29c85c',
+  	repo: 'gitalk',
+  	owner: 'Sn1pEr-ssd',
+  	admin: ['Sn1pEr-ssd'],
+  	id: 'Sun Mar 08 2020 00:00:00 GMT+0800',
+  	distractionFreeMode: 'true'
+})
+gitalk.render('gitalk-container') 
+}
+</script>
+
+
+
+
+
+
+
 
 
           </div>
@@ -356,9 +512,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
