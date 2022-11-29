@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/image-20210928014101.png">
 <meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/image-20210928015210.png">
 <meta property="article:published_time" content="2021-03-30T02:29:18.000Z">
-<meta property="article:modified_time" content="2021-10-12T07:19:46.000Z">
+<meta property="article:modified_time" content="2022-09-30T09:53:08.794Z">
 <meta property="article:author" content="Sn1pEr">
 <meta property="article:tag" content="面试题">
 <meta name="twitter:card" content="summary">
@@ -336,32 +336,33 @@ var _hmt = _hmt || [];
 <p>常用命令如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">net use \\127.0.0.1\ipc$ <span class="string">&quot;password&quot;</span> /user:<span class="string">&quot;username&quot;</span> <span class="comment">#建立用户名、密码连接</span></span><br><span class="line">net use z: \\127.0.0.1\c$ <span class="string">&quot;密码&quot;</span> /user:<span class="string">&quot;用户名&quot;</span>  (即可将对方的c盘映射为自己的z盘，其他盘类推) <span class="comment">#映射硬盘</span></span><br><span class="line">net use z: \\127.0.0.1\c$   <span class="comment">#直接访问</span></span><br><span class="line">net use c: /del     <span class="comment">#删除映射的c盘，其他盘类推 </span></span><br><span class="line">net use * /del      <span class="comment">#删除全部,会有提示要求按y确认</span></span><br></pre></td></tr></table></figure>
 <h3 id="预编译防sql注入"><a href="#预编译防sql注入" class="headerlink" title="预编译防sql注入"></a>预编译防sql注入</h3><p>预编译之后计算机将用户输入的数据只当成数据了，而不会有当成语法进行运行的可能。（绝大部分可以直接防止注入，有时宽字节可绕）</p>
-<p>原理：通常来说，一条SQL语句从传入到运行经历了生成语法树、执行计划优化、执行这几个阶段。在预编译过程中，数据库首先接收到带有预编译占位符?的SQL语句，解析生成语法树(Lex)，并缓存在cache中，然后接收对应的参数信息，从cache中取出语法树设置参数，然后再进行优化和执行。由于参数信息传入前语法树就已生成，执行的语法结构也就无法因参数而改变，自然也就杜绝了SQL注入的出现。</p>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>通常来说，一条SQL语句从传入到运行经历了生成语法树、执行计划优化、执行这几个阶段。在预编译过程中，数据库首先接收到带有预编译占位符?的SQL语句，解析生成语法树(Lex)，并缓存在cache中，然后接收对应的参数信息，从cache中取出语法树设置参数，然后再进行优化和执行。由于参数信息传入前语法树就已生成，执行的语法结构也就无法因参数而改变，自然也就杜绝了SQL注入的出现。</p>
 <p>再提一嘴，预编译可以分为客户端预编译和服务器端预编译。客户端预编译，是在代码处理时进行预编译。以java举例下面是常见的java预编译写法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ResultSet <span class="title">re_querySQL</span><span class="params">(String sql,Object...objs)</span></span>&#123;</span><br><span class="line">        PreparedStatement ps;</span><br><span class="line">        Connection conn;</span><br><span class="line">        ResultSet rs = <span class="keyword">null</span>;</span><br><span class="line">        conn = DBUtil.getConnection();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ps = conn.prepareStatement(sql);</span><br><span class="line">            <span class="keyword">if</span> (objs != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; objs.length; j++) &#123;</span><br><span class="line">                    ps.setObject(j + <span class="number">1</span>, objs[j]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(ps);</span><br><span class="line">            rs = ps.executeQuery();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> rs;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>我们的sql语句需要这样写：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String sql = <span class="string">&quot;select * from user where uname=?;&quot;</span>;</span><br><span class="line">ResultSet rs = DBUtil.re_querySQL(sql,username);</span><br></pre></td></tr></table></figure>
 <p>经过预编译后，我们查看日志：</p>
-<p><img src="image-20210928014101.png">，发现在进行sql查询时，依然为正常查询语句，但实际上已经进行了预编译。</p>
+<p><img src="./image-20210928014101.png">，发现在进行sql查询时，依然为正常查询语句，但实际上已经进行了预编译。</p>
 <p>服务器预编译，则需要手动开启：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;xxx?useServerPrepStmts&#x3D;true&amp;cachePrepStmts&#x3D;true</span><br></pre></td></tr></table></figure>
 <p>（嫌麻烦，我就直接用workbentch之类的直接执行语句了）日志如下：</p>
-<p><img src="image-20210928015210.png"></p>
+<p><img src="./image-20210928015210.png"></p>
 <p>可以看到，明显有占位符和赋值的操作。</p>
 <p>值得注意的是，预编译一定要用占位符，而不能自己进行拼接，否则依然存在注入（废话）</p>
 <p>经典操作：<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/190170">https://www.anquanke.com/post/id/190170</a></p>
+<h4 id="绕过"><a href="#绕过" class="headerlink" title="绕过"></a>绕过</h4><ol>
+<li>预编译只是使用占位符替代的字段值的部分，如果第一次交互传入的命令使用了字符串拼接，使得命令是攻击者可控的，那么预编译不会生效。</li>
+<li>在有的情况下，数据库处理引擎会检查数据表和数据列是否存在，因此<strong>数据表名和列名不能被占位符所替代</strong>。这种情况下如果表名和列名可控，则可能引入漏洞。包括<strong>排序参数</strong>，也无法进行预编译。</li>
+<li>部分语言引擎在实现上存在一定问题，可能会存在绕过漏洞。</li>
+</ol>
+<p>mybatis中<code>$&#123;&#125;</code>与<code>#&#123;&#125;</code>的区别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. #将传入的数据都当成一个字符串，会对自动传入的数据加一个双引号。如：order by #user_id#，如果传入的值是111,那么解析成sql时的值为order by &quot;111&quot;, 如果传入的值是id，则解析成的sql为order by &quot;id&quot;.</span><br><span class="line">　　</span><br><span class="line">2. $将传入的数据直接显示生成在sql中。如：order by $user_id$，如果传入的值是111,那么解析成sql时的值为order by user_id,  如果传入的值是id，则解析成的sql为order by id.</span><br><span class="line">　　</span><br><span class="line">3. #方式能够很大程度防止sql注入。</span><br><span class="line">　　</span><br><span class="line">4.$方式无法防止Sql注入。</span><br><span class="line"> </span><br><span class="line">5.$方式一般用于传入数据库对象，例如传入表名.</span><br><span class="line">　　</span><br><span class="line">6.一般能用#的就别用$.</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="app渗透流程"><a href="#app渗透流程" class="headerlink" title="app渗透流程"></a>app渗透流程</h3><h3 id="SSTI防护"><a href="#SSTI防护" class="headerlink" title="SSTI防护"></a>SSTI防护</h3><p>render_template()不渲染</p>
 <p>render_template_string()渲染</p>
 <h3 id="linux下-etc-shadow和-etc-passwd的区别"><a href="#linux下-etc-shadow和-etc-passwd的区别" class="headerlink" title="linux下/etc/shadow和/etc/passwd的区别"></a>linux下/etc/shadow和/etc/passwd的区别</h3><p>/etc/shadow保存了真正的密码，/etc/passwd只保存是否有密码（x表示有，空着表示没有）</p>
 <p>/etc/shadow须root权限，/etc/passwd任意用户可读</p>
-<h1 id="血和泪的教训"><a href="#血和泪的教训" class="headerlink" title="血和泪的教训"></a>血和泪的教训</h1><ol>
-<li>别写太多东西，会就写，不会就别写，别整熟悉精通那一套话术，一般来说面试官都是看着你的简历和博客来问问题的</li>
-<li>尽量写和申请工作相关的知识，如渗透测试就多写关于渗透测试的知识和经历</li>
-<li>从大三下就要开始复习基础知识和自己的博客，捋一捋自己到底学了什么，最好写个思维导图之类的。（之前某公司的师傅问我我博客内容，因为时间太久了所以一句都答不上来，直接GG）</li>
-<li>早投简历，有的公司全年都在招实习，但大部分公司在暑假前一两个月招，如果5月底才投简历找实习的话，自身水平不够很容易翻车（比如我），而且早投简历可以根据面试官问你的题目难度修改你的简历，让你你更熟悉自己（我是fw），更好查缺补漏。</li>
-<li>多面试有好处，可以把不会的记下，之后再慢慢思考，反正简历不要钱，随便投。<strong>但时间紧迫的时候完全相反</strong>，要考虑慎重，充分做好准备，多写点面试题。</li>
-<li>争取多拿几份offer，这样能给自己更多选择。</li>
-</ol>
 
     
 
@@ -518,7 +519,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSSRF%EF%BC%8C%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E6%9C%89SSRF%EF%BC%8C%E4%BB%96%E6%9C%89%E4%BB%80%E4%B9%88%E5%8D%B1%E5%AE%B3"><span class="toc-number">1.</span> <span class="toc-text">什么是SSRF，怎么判断有SSRF，他有什么危害</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E7%BB%99%E5%AE%9A%E4%B8%80%E4%B8%AA%E6%97%A0%E9%AA%8C%E8%AF%81%E7%A0%81%E7%9A%84%E7%BD%91%E7%AB%99%EF%BC%8C%E5%9C%A8%E6%8F%90%E4%BA%A4%E5%8F%82%E6%95%B0%E6%9C%AA%E7%9F%A5%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%AF%A5%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%88%86%E7%A0%B4%EF%BC%8C%E5%A6%82%E4%BD%95%E7%9F%A5%E9%81%93%E4%BB%96%E7%88%86%E7%A0%B4%E6%88%90%E5%8A%9F"><span class="toc-number">2.</span> <span class="toc-text">如果给定一个无验证码的网站，在提交参数未知的情况下该如何实现爆破，如何知道他爆破成功</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">获取参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%88%86%E7%A0%B4%E6%88%90%E5%8A%9F"><span class="toc-number">2.2.</span> <span class="toc-text">爆破成功</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#find%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8Clinux%E4%B8%8A%E6%98%AF%E5%90%A6%E6%9C%89%E6%AF%94%E5%AE%83%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4%EF%BC%8C%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">3.</span> <span class="toc-text">find的原理是什么，linux上是否有比它更快的查找命令，原理是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99%E5%AE%9A%E4%B8%80%E4%B8%AA%E7%BD%91%E7%AB%99%EF%BC%8C%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%A6%82%E4%BD%95%E7%9F%A5%E9%81%93%E5%AE%83%E5%BC%80%E5%90%AF%E4%BA%86%E5%93%AA%E4%BA%9B%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.</span> <span class="toc-text">给定一个网站，如何获取中间件信息，如何知道它开启了哪些服务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="toc-number">4.1.</span> <span class="toc-text">获取中间件信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E6%8E%A2%E6%B5%8B"><span class="toc-number">4.2.</span> <span class="toc-text">服务探测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nmap%E6%8E%A2%E6%B5%8B%E7%AB%AF%E5%8F%A3%E5%AD%98%E6%B4%BB%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">5.</span> <span class="toc-text">nmap探测端口存活的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sql-getshell%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">sql getshell方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPC"><span class="toc-number">7.</span> <span class="toc-text">IPC$</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E7%BC%96%E8%AF%91%E9%98%B2sql%E6%B3%A8%E5%85%A5"><span class="toc-number">8.</span> <span class="toc-text">预编译防sql注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#app%E6%B8%97%E9%80%8F%E6%B5%81%E7%A8%8B"><span class="toc-number">9.</span> <span class="toc-text">app渗透流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSTI%E9%98%B2%E6%8A%A4"><span class="toc-number">10.</span> <span class="toc-text">SSTI防护</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#linux%E4%B8%8B-etc-shadow%E5%92%8C-etc-passwd%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">11.</span> <span class="toc-text">linux下&#x2F;etc&#x2F;shadow和&#x2F;etc&#x2F;passwd的区别</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%80%E5%92%8C%E6%B3%AA%E7%9A%84%E6%95%99%E8%AE%AD"><span class="toc-number"></span> <span class="toc-text">血和泪的教训</span></a>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSSRF%EF%BC%8C%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E6%9C%89SSRF%EF%BC%8C%E4%BB%96%E6%9C%89%E4%BB%80%E4%B9%88%E5%8D%B1%E5%AE%B3"><span class="toc-number">1.</span> <span class="toc-text">什么是SSRF，怎么判断有SSRF，他有什么危害</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E6%9E%9C%E7%BB%99%E5%AE%9A%E4%B8%80%E4%B8%AA%E6%97%A0%E9%AA%8C%E8%AF%81%E7%A0%81%E7%9A%84%E7%BD%91%E7%AB%99%EF%BC%8C%E5%9C%A8%E6%8F%90%E4%BA%A4%E5%8F%82%E6%95%B0%E6%9C%AA%E7%9F%A5%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%AF%A5%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%88%86%E7%A0%B4%EF%BC%8C%E5%A6%82%E4%BD%95%E7%9F%A5%E9%81%93%E4%BB%96%E7%88%86%E7%A0%B4%E6%88%90%E5%8A%9F"><span class="toc-number">2.</span> <span class="toc-text">如果给定一个无验证码的网站，在提交参数未知的情况下该如何实现爆破，如何知道他爆破成功</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">获取参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%88%86%E7%A0%B4%E6%88%90%E5%8A%9F"><span class="toc-number">2.2.</span> <span class="toc-text">爆破成功</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#find%E7%9A%84%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8Clinux%E4%B8%8A%E6%98%AF%E5%90%A6%E6%9C%89%E6%AF%94%E5%AE%83%E6%9B%B4%E5%BF%AB%E7%9A%84%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4%EF%BC%8C%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">3.</span> <span class="toc-text">find的原理是什么，linux上是否有比它更快的查找命令，原理是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%99%E5%AE%9A%E4%B8%80%E4%B8%AA%E7%BD%91%E7%AB%99%EF%BC%8C%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%A6%82%E4%BD%95%E7%9F%A5%E9%81%93%E5%AE%83%E5%BC%80%E5%90%AF%E4%BA%86%E5%93%AA%E4%BA%9B%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.</span> <span class="toc-text">给定一个网站，如何获取中间件信息，如何知道它开启了哪些服务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E4%B8%AD%E9%97%B4%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="toc-number">4.1.</span> <span class="toc-text">获取中间件信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E6%8E%A2%E6%B5%8B"><span class="toc-number">4.2.</span> <span class="toc-text">服务探测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nmap%E6%8E%A2%E6%B5%8B%E7%AB%AF%E5%8F%A3%E5%AD%98%E6%B4%BB%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">5.</span> <span class="toc-text">nmap探测端口存活的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sql-getshell%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">sql getshell方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPC"><span class="toc-number">7.</span> <span class="toc-text">IPC$</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E7%BC%96%E8%AF%91%E9%98%B2sql%E6%B3%A8%E5%85%A5"><span class="toc-number">8.</span> <span class="toc-text">预编译防sql注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">8.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%95%E8%BF%87"><span class="toc-number">8.2.</span> <span class="toc-text">绕过</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#app%E6%B8%97%E9%80%8F%E6%B5%81%E7%A8%8B"><span class="toc-number">9.</span> <span class="toc-text">app渗透流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSTI%E9%98%B2%E6%8A%A4"><span class="toc-number">10.</span> <span class="toc-text">SSTI防护</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#linux%E4%B8%8B-etc-shadow%E5%92%8C-etc-passwd%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">11.</span> <span class="toc-text">linux下&#x2F;etc&#x2F;shadow和&#x2F;etc&#x2F;passwd的区别</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -695,6 +696,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">OGNL</a>
               </li>
              
@@ -704,14 +713,6 @@ gitalk.render('gitalk-container')
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">jsp</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -735,11 +736,11 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">nmap</a>
+                <a href="javascript:void(0)" class="js-tag color3">提权</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">提权</a>
+                <a href="javascript:void(0)" class="js-tag color5">nmap</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -759,18 +760,6 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">phpstorm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">xdebug</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">phpstudy</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">漏洞分析</a>
               </li>
              
@@ -787,7 +776,23 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">yii</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">phpstorm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">xdebug</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">phpstudy</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -803,11 +808,11 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color4">端口号</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">端口号</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -823,11 +828,11 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">exp</a>
+                <a href="javascript:void(0)" class="js-tag color4">面试题</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">面试题</a>
+                <a href="javascript:void(0)" class="js-tag color4">exp</a>
               </li>
             
             <div class="clearfix"></div>
