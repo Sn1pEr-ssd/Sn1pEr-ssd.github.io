@@ -279,9 +279,9 @@ var _hmt = _hmt || [];
 <li>先安装pyinstall3.0，他会自动帮你安装pywin32-228，之后打包的时候会提示<code>importError No module named pywintypes</code>，需要自行卸载<code>pip uninstall pywin32</code>（我不知道会不会降低版本，我是直接卸了的）</li>
 </ol>
 <p>错误信息：</p>
-<p><img src="image-20210928051541.png"></p>
+<p><img src="/2021/09/28/shellcode%E5%85%8D%E6%9D%80%E4%B9%8B%E8%BF%9C%E7%A8%8B%E5%8A%A0%E8%BD%BD/image-20210928051541.png"></p>
 <p>pyinstaller3.0的自动安装：</p>
-<p><img src="image-20210928051623.png"></p>
+<p><img src="/2021/09/28/shellcode%E5%85%8D%E6%9D%80%E4%B9%8B%E8%BF%9C%E7%A8%8B%E5%8A%A0%E8%BD%BD/image-20210928051623.png"></p>
 <ol start="3">
 <li>最好用管理员权限安装pywin32，因为他需要把pywintype27.dll复制到C:\System32\里</li>
 <li>如果以前有安装过py2后面卸载了（pywin32的安装路径和环境变量里设置的路径不一样的时候），可能导致pywin32安装至原来的文件夹中（原来的文件夹没有了就直接安装失败，不用finish直接退出了）。需要进注册表<code>计算机\HKEY_CURRENT_USER\SOFTWARE\Python\PythonCore\2.7\</code>中修改路径</li>
@@ -519,7 +519,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -642,11 +642,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -662,23 +670,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -702,6 +706,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -722,11 +734,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -742,15 +762,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -758,7 +770,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -766,11 +778,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">

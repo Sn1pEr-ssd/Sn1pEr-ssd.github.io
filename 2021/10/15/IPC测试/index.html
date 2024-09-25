@@ -279,9 +279,9 @@ var _hmt = _hmt || [];
 <li>用户账户密码不能为空</li>
 </ol>
 <p>如果不关闭防火墙会出现下面的情况：</p>
-<p><img src="image-20211015181005.png"></p>
+<p><img src="/2021/10/15/IPC%E6%B5%8B%E8%AF%95/image-20211015181005.png"></p>
 <p>不关杀软会出现下面的情况：</p>
-<p><img src="image-20211015183759.png"></p>
+<p><img src="/2021/10/15/IPC%E6%B5%8B%E8%AF%95/image-20211015183759.png"></p>
 <p>密码为空则会提示<code>用户帐户限制阻止了此用户进行登录。例如：不允许使用空密码，登录次数的限制，或强制实施的某个策略限制</code>。</p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><code>net share</code> 查看是否共享（默认共享）</p>
 <p><code>net use</code> 查看所有连接</p>
@@ -289,7 +289,7 @@ var _hmt = _hmt || [];
 <p><code>net use * /del /y</code> 删除所有连接</p>
 <p>由于我的虚拟机只有一个盘，所以必须要管理员权限，否则提示拒绝访问。</p>
 <p><code>net use q: \\192.168.80.140\c$ &quot;你的密码&quot; /user:&quot;你的账户&quot;</code>将<code>192.168.80.140</code>的C盘映射到本机的q盘，如下：</p>
-<p><img src="image-20211015184158.png"></p>
+<p><img src="/2021/10/15/IPC%E6%B5%8B%E8%AF%95/image-20211015184158.png"></p>
 <p><code>copy a.txt \\192.168.80.140\c$ </code> 将a.txt传到靶机C盘</p>
 <p><code>dir \\192.168.80.140\c$</code> 查看目录下的文件（tree命令也可）</p>
 <h3 id="at命令"><a href="#at命令" class="headerlink" title="at命令"></a>at命令</h3><p><strong>注意！</strong>该命令在winserver2008及以后的系统中（包括win10）已经废弃，改为了schtasks</p>
@@ -303,7 +303,7 @@ var _hmt = _hmt || [];
 <p>（现已加入360豪华套餐）</p>
 <p>下载地址：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/psexec">https://docs.microsoft.com/zh-cn/sysinternals/downloads/psexec</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psexec 是 windows 下非常好的一款远程命令行工具。psexec的使用不需要对方主机开方3389端口，只需要对方开启admin$共享 (该共享默认开启)。但是，假如目标主机开启了防火墙，psexec也是不能使用的，会提示找不到网络路径。由于psexec是Windows提供的工具，所以杀毒软件将其列在白名单中。</span><br></pre></td></tr></table></figure>
-<p><img src="image-20211016153702.png"></p>
+<p><img src="/2021/10/15/IPC%E6%B5%8B%E8%AF%95/image-20211016153702.png"></p>
 <p>使用条件：</p>
 <ol>
 <li><p>对方主机开启了 <code>admin$</code>共享，如果关闭了<code>admin$</code>共享，会提示：找不到网络名</p>
@@ -538,7 +538,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -661,11 +661,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -681,23 +689,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -721,6 +725,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -741,11 +753,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -761,15 +781,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -777,7 +789,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -785,11 +797,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">

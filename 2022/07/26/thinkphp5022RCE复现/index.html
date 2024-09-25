@@ -279,13 +279,13 @@ var _hmt = _hmt || [];
 <p>了解了MVC结构之后再来说说ThinkPHP，ThinkPHP5.0.22是通过参数s来实现的，而参数中是通过路由来进行调用相应的类的，所以首先得大致了解它的路由是如何运行的。</p>
 <h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3><p>首先是查看路由。这个有三种方法，一种是从开头插断点嗯跟代码跟过去（牛一点也可以大概看一看代码然后人脑+PHPstorm的快捷键跟过去），另一种就是通过改参数匹配框架下对应的文件夹，找到对应文件夹后就基本了解了大概运行方式，第三种是看开发文档之类的文件来了解如何进行开发。</p>
 <p>在thinkphp中，比较好找跟着代码很块就能找到，在<code>thinkphp/library/think/App.php</code>下。在617行的<code>routeCheck</code>函数中对路由进行检查</p>
-<p><img src="./images-202207252212.png"></p>
+<p><img src="/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/images-202207252212.png"></p>
 <p>首先它会检测是否开启路由，开启后读取缓存的路由，如果没读取到缓存的路由信息则会导入配置文件中的路由并将路由储存在<code>$rules</code>中，然后对路由进行检测，若路由无效则会进入<code>Route::parseUrl</code>中对其进行切割。之后一路跟进，在route.php的parseUrl中，有这么一个操作：</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="built_in">self</span>::<span class="variable">$bind</span>[<span class="string">&#x27;module&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$bind</span> = str_replace(<span class="string">&#x27;/&#x27;</span>, <span class="variable">$depr</span>, <span class="built_in">self</span>::<span class="variable">$bind</span>[<span class="string">&#x27;module&#x27;</span>]);</span><br><span class="line">        <span class="comment">// 如果有模块/控制器绑定</span></span><br><span class="line">    <span class="variable">$url</span> = <span class="variable">$bind</span> . (<span class="string">&#x27;.&#x27;</span> != substr(<span class="variable">$bind</span>, <span class="number">-1</span>) ? <span class="variable">$depr</span> : <span class="string">&#x27;&#x27;</span>) . ltrim(<span class="variable">$url</span>, <span class="variable">$depr</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$url</span>              = str_replace(<span class="variable">$depr</span>, <span class="string">&#x27;|&#x27;</span>, <span class="variable">$url</span>);</span><br><span class="line">    <span class="keyword">list</span>(<span class="variable">$path</span>, <span class="variable">$var</span>) = <span class="built_in">self</span>::parseUrlPath(<span class="variable">$url</span>);</span><br><span class="line">    <span class="variable">$route</span>            = [<span class="literal">null</span>, <span class="literal">null</span>, <span class="literal">null</span>];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$path</span>)) &#123;</span><br><span class="line">    <span class="comment">// 解析模块代码</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="./images-202207252210.png"></p>
+<p><img src="/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/images-202207252210.png"></p>
 <p>可以看到，它将<code>index/\think\app/invokefunction</code>替换成了<code>index|\think\app|invokefunction</code>，再用<code>self::parseUrlPath</code>进行了切割之后直接当成了模块、控制器等，最后在1263行封装成为路由。</p>
 <p>在图里我们可以看到模块为<code>index</code>，控制器为<code>\thinkphp\app</code>，函数为<code>invokefunction</code></p>
-<p><img src="./images-202207252333.png"></p>
+<p><img src="/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/images-202207252333.png"></p>
 <p>最后在<code>thinkphp/library/think/App.php</code>下的445行exec函数一路向下进入494行的<code>module</code>函数，在其中通过获取控制器名和函数名且没有任何过滤，最终执行控制器下的指定函数。</p>
 <h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>其实已经没什么好说的了</p>
 <p>通过<code>thinkphp/library/think/App.php</code>中的<code>invokeFunction</code>函数，可以通过反射实例化任意函数。加上上面说的控制路由执行任意函数。只要利用<code>/</code>将模型、控制器、函数分开，然后再将参数传入即可。</p>
@@ -293,7 +293,7 @@ var _hmt = _hmt || [];
 <figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/public/?s=index/\think\app/invokefunction&amp;function=phpinfo&amp;vars[0]=1</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>www.thinkphp5022.com:8888</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.9</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>XDEBUG_SESSION=XDEBUG_ECLIPSE; PHPSESSID=dr7sbponiagmgo0qjq5qv22q7c</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h3><p>最后看看从5.0.22到5.0.23如何进行了防御：</p>
 <p>它在设置控制器的位置进行了正则匹配：</p>
-<p><img src="./images-202207252351.png"></p>
+<p><img src="/2022/07/26/thinkphp5022RCE%E5%A4%8D%E7%8E%B0/images-202207252351.png"></p>
 
     
 
@@ -508,7 +508,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -631,11 +631,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -651,23 +659,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -691,6 +695,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -711,11 +723,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -731,15 +751,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -747,7 +759,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -755,11 +767,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -281,21 +281,21 @@ var _hmt = _hmt || [];
 <p>phpcms的文件功能摸清楚还是很简单的，如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">api  功能接口</span><br><span class="line">caches 缓存</span><br><span class="line">html 前端（实际上是空的）</span><br><span class="line">install 安装程序（完成后自动删除）</span><br><span class="line">phpcms 主程序</span><br><span class="line">phpsso_server ssoserver（不懂这是干啥的）</span><br><span class="line">static 前端css等</span><br><span class="line">uploadfile 文件上传路径</span><br></pre></td></tr></table></figure>
 <p>phpcms的过滤基本都在<code>/libs/functions/global.func.php</code>，网站的启动核心在<code>/phpcms/base.php</code>，这里有所有的load函数，而这玩意通过三个参数来运行，m、c、a，m为模块，对应的是modules里的文件夹名（大部分情况），c为控制器，对应的是<code>/modules/模块/</code>下的文件名，a为行为，对应的是<code>/modules/模块/控制器.php</code>下的函数（也是大部分情况）。以最简单的后台为例：</p>
-<p><img src="./imgs-20210329202629.png"></p>
+<p><img src="/2021/03/29/phpcms%E5%AE%A1%E8%AE%A1/imgs-20210329202629.png"></p>
 <p>对应的是</p>
-<p><img src="./img-20210329202916.png"></p>
+<p><img src="/2021/03/29/phpcms%E5%AE%A1%E8%AE%A1/img-20210329202916.png"></p>
 <h2 id="举个例子"><a href="#举个例子" class="headerlink" title="举个例子"></a>举个例子</h2><p>拿我一次挖洞失败举例：</p>
 <p>全局查找<code>unlink()</code>函数（dedecms告诉我可能存在任意文件删除），找啊找，大多数都是参数不可控，要么就是有路径比较，绕不过去，突然，眼前一亮，有个可控的参数：</p>
-<p><img src="./img-20210329203408.png"></p>
+<p><img src="/2021/03/29/phpcms%E5%AE%A1%E8%AE%A1/img-20210329203408.png"></p>
 <p>登陆后台后构造url：<code>?m=attachment&amp;c=manage&amp;a=pullic_delthumbs&amp;filepath=../../../../../../../../../../aaa.txt&amp;pc_hash=PrraYC</code>（aaa.txt在该盘的最上层目录里）。来，跟着跑一跑：</p>
 <p>发现居然没有过滤<code>../</code>，内心狂喜</p>
 <p>下一个获取ext的函数在<code>global.func.php</code></p>
-<p><img src="./img-20210329203901.png"></p>
+<p><img src="/2021/03/29/phpcms%E5%AE%A1%E8%AE%A1/img-20210329203901.png"></p>
 <p>下面的就是验证后缀，查看路径是否有该文件，有则删除并返回1，无则报错并返回0，关键就在如何绕过这个后缀了，尝试过二次url编码<code>%00</code>然后截断失败后我就没有办法绕过了，只好作罢（二次url编码是因为有个addslashes函数）</p>
-<p><img src="./img-20210329204522.png"></p>
+<p><img src="/2021/03/29/phpcms%E5%AE%A1%E8%AE%A1/img-20210329204522.png"></p>
 <p>最后，给大家伙表演一个任意图片删除 :)</p>
-<p><img src="./img-20210329204816.png"></p>
-<p><img src="./img-20210329205953.png"></p>
+<p><img src="/2021/03/29/phpcms%E5%AE%A1%E8%AE%A1/img-20210329204816.png"></p>
+<p><img src="/2021/03/29/phpcms%E5%AE%A1%E8%AE%A1/img-20210329205953.png"></p>
 <p>当然，如果有会绕的大佬能否给我讲一讲怎么绕过的，感激不尽</p>
 
     
@@ -511,7 +511,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -634,11 +634,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -654,23 +662,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -694,6 +698,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -714,11 +726,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -734,15 +754,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -750,7 +762,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -758,11 +770,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">

